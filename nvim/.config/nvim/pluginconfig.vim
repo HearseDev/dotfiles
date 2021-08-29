@@ -37,7 +37,7 @@ nnoremap <silent> <C-f> :Telescope current_buffer_fuzzy_find<CR>
 lua << EOF
 require'bufferline'.setup {
   options = {
-    separator_style = "slant",
+    --separator_style = "slant",
     close_command = "bdelete! %d",
     diagnostics = "nvim_lsp",
     diagnostics_indicator = function(count, level, diagnostics_dict, context)
