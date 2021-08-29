@@ -1,0 +1,12 @@
+#Start tmux
+if status is-interactive
+# don't nest inside another tmux
+and not set -q TMUX
+  # Adapted from https://unix.stackexchange.com/a/176885/347104
+  # Create session 'main' or attach to 'main' if already exists.
+  tmux new-session -A -s main
+end
+#Alias
+alias class="ssh cheema_0856412@server.lawtonsclass.com"
+alias b='sudo apt update -y;sudo apt upgrade -y;sudo apt clean -y;sudo apt autoclean -y;sudo apt autoremove -y;nvim +PlugUpdate +PlugUpgrade +TSUpdateSync +qall;$THEOS/bin/update-theos;nvm install latest;omf update;fisher update'
+alias nic='$THEOS/bin/nic.pl'
