@@ -1,0 +1,18 @@
+{
+  "@interface": {
+    "prefix": ["interface"],
+    "body": [
+      "@interface ${1:class}",
+      "\t$0",
+      "@end"
+    ],
+    "description": "@interface"
+  },
+  "method": {
+    "prefix": ["method"],
+    "body": [
+      "-(${1:returnType})${0:methodName}"
+    ],
+    "description": "method"
+  }
+}
