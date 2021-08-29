@@ -8,5 +8,5 @@ and not set -q TMUX
 end
 #Alias
 alias class="ssh cheema_0856412@server.lawtonsclass.com"
-alias b='sudo apt update -y;sudo apt upgrade -y;sudo apt clean -y;sudo apt autoclean -y;sudo apt autoremove -y;nvim +PlugUpdate +PlugUpgrade +TSUpdateSync +qall;$THEOS/bin/update-theos;nvm install latest;omf update;fisher update'
+alias b='sudo apt update -y;sudo apt upgrade -y;sudo apt clean -y;sudo apt autoclean -y;sudo apt autoremove -y;nvim +PlugUpdate +PlugUpgrade +TSUpdateSync +qall;$THEOS/bin/update-theos;nvm install latest;omf update;fisher update;powershell.exe choco upgrade all'
 alias nic='$THEOS/bin/nic.pl'
