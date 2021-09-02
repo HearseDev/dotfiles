@@ -10,8 +10,9 @@ set hidden
 " Set SignColumn to Number
 "set signcolumn=number
 set nu rnu
-
+set cursorline
 set termguicolors
+set ignorecase
 " Clipboard
 set clipboard=unnamedplus
 " Hide Builtin Vim insert status
