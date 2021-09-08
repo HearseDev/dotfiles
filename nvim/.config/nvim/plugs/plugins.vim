@@ -1,6 +1,4 @@
 call plug#begin(stdpath('data') . '/plugged')
-    "Parser 
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     " UI
     Plug 'hoob3rt/lualine.nvim'
     Plug 'akinsho/nvim-bufferline.lua'
@@ -24,6 +22,7 @@ call plug#begin(stdpath('data') . '/plugged')
     Plug 'hrsh7th/nvim-compe'
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     Plug 'glepnir/lspsaga.nvim'
     Plug 'ray-x/lsp_signature.nvim' 
     " Icons
