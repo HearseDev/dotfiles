@@ -19,12 +19,19 @@ call plug#begin(stdpath('data') . '/plugged')
     " LSP
     Plug 'neovim/nvim-lspconfig'
     Plug 'kabouzeid/nvim-lspinstall'
-    Plug 'hrsh7th/nvim-compe'
-    Plug 'hrsh7th/vim-vsnip'
-    Plug 'hrsh7th/vim-vsnip-integ'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     Plug 'glepnir/lspsaga.nvim'
     Plug 'ray-x/lsp_signature.nvim' 
+    " Cmp
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-vsnip'
+    Plug 'hrsh7th/cmp-nvim-lua'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'ray-x/cmp-treesitter'
+
     " Icons
     Plug 'kyazdani42/nvim-web-devicons' 
 call plug#end()

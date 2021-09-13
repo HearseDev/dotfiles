@@ -2,6 +2,7 @@
 source $HOME/.config/nvim/plugs/plugins.vim
 source $HOME/.config/nvim/pluginconfig.vim
 lua require("evil_lualine")
+lua require("nvim-cmp")
 lua require("lsp")
 "xm files
 au BufRead,BufNewFile *.xm set filetype=logos
