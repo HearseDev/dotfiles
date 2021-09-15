@@ -16,6 +16,7 @@ call plug#begin(stdpath('data') . '/plugged')
     Plug 'TimUntersberger/neogit'
     Plug 'lewis6991/gitsigns.nvim'
     Plug 'voldikss/vim-floaterm'
+    Plug 'lukas-reineke/indent-blankline.nvim'
     " LSP
     Plug 'neovim/nvim-lspconfig'
     Plug 'kabouzeid/nvim-lspinstall'

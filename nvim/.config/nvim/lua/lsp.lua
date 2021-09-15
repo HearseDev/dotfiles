@@ -58,7 +58,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
     'additionalTextEdits',
   }
 }
---cppserver setup
+--clangd setup
 require "lspconfig".clangd.setup{
     cmd = { "clangd","-clang-tidy", "--clang-tidy-checks=modernize-*,diagnostic-*,analyzer-*,performance-*,readability-*,llvm-*,bugprone-*,-readability-magic-numbers*,-llvm-include-order*,- modernize-use-trailing-return-type*", "--background-index"},
     on_attach = on_attach,
