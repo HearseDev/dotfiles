@@ -1,21 +1,5 @@
 local nvim_lsp = require('lspconfig')
 local cmpcapabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
---LSPinstall
-local function setup_servers()
-  require'lspinstall'.setup()
-  local servers = require'lspinstall'.installed_servers()
-  for _, server in pairs(servers) do
-    require "lspconfig"[server].setup{
-      capabilities = cmpcapabilities
-    }
-  end
-end
-setup_servers()
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require'lspinstall'.post_install_hook = function ()
-  setup_servers() -- reload installed servers
-  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
-end
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -47,7 +31,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-
+  buf_set_keymap('n', '<space>o', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
 end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -58,9 +42,27 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
     'additionalTextEdits',
   }
 }
+--LSPinstall
+local function setup_servers()
+  require'lspinstall'.setup()
+  local servers = require'lspinstall'.installed_servers()
+  for _, server in pairs(servers) do
+    require "lspconfig"[server].setup{
+      capabilities = cmpcapabilities, capabilities,
+      on_attach = on_attach,
+    }
+  end
+end
+setup_servers()
+-- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
+require'lspinstall'.post_install_hook = function ()
+  setup_servers() -- reload installed servers
+  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
+end
+
 --clangd setup
 require "lspconfig".clangd.setup{
-    cmd = { "clangd","-clang-tidy", "--clang-tidy-checks=modernize-*,diagnostic-*,analyzer-*,performance-*,readability-*,llvm-*,bugprone-*,-readability-magic-numbers*,-llvm-include-order*,- modernize-use-trailing-return-type*", "--background-index"},
+    cmd = { "clangd","-clang-tidy", "--clang-tidy-checks=modernize-*,diagnostic-*,analyzer-*,performance-*,readability-*,llvm-*,bugprone-*,-readability-magic-numbers*,-llvm-include-order*,- modernize-use-trailing-return-type*", "--background-index=true"},
     on_attach = on_attach,
     capabilities = capabilities, cmpcapabilities
   }
@@ -83,30 +85,37 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
   underline = true,
   update_in_insert = true,
 })
---AutoshowHover
-vim.o.updatetime = 250
-vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
---GutterIcons
-local signs = { Error = "✗ ", Warning = " ", Hint = " ", Information = " " }
 
+--AutoshowHover
+vim.o.updatetime = 10
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
+
+--GutterSigns
+local signs = { Error = "✗ ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
-  local hl = "LspDiagnosticsSign" .. type
+  local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
---LspSaga
-local saga = require 'lspsaga'
-saga.init_lsp_saga{
-  use_saga_diagnostic_sign = false,
-  code_action_prompt = {
-    enable = false
-  }
-}
-vim.api.nvim_set_keymap('n', '<leader>qf', '<CMD>lua require(\'lspsaga.codeaction\').code_action()<CR>' , { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', '<leader>qf', '<CMD>lua require(\'lspsaga.codeaction\').range_code_action()<CR>' , { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap('n', '<leader>qr', '<CMD>lua require(\'lspsaga.rename\').rename()<CR>', { noremap = true, silent = true })
---lsp_signature
-require "lsp_signature".setup{
-  floating_window = false,
-  hint_prefix = "כֿ "
-}
+
+--LspSaga
+--local saga = require 'lspsaga'
+--saga.init_lsp_saga{
+  --use_saga_diagnostic_sign = false,
+  --code_action_prompt = {
+    --enable = false
+  --}
+--}
+--vim.api.nvim_set_keymap('n', '<leader>qf', '<CMD>lua require(\'lspsaga.codeaction\').code_action()<CR>' , { noremap = true, silent = true })
+--vim.api.nvim_set_keymap('v', '<leader>qf', '<CMD>lua require(\'lspsaga.codeaction\').range_code_action()<CR>' , { noremap = true, silent = true })
+
+--vim.api.nvim_set_keymap('n', '<leader>qr', '<CMD>lua require(\'lspsaga.rename\').rename()<CR>', { noremap = true, silent = true })
+----lsp_signature
+--require "lsp_signature".setup{
+  --floating_window = false,
+  --hint_prefix = "כֿ "
+--}
+
+
+
+

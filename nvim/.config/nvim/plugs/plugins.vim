@@ -17,11 +17,12 @@ call plug#begin(stdpath('data') . '/plugged')
     Plug 'lewis6991/gitsigns.nvim'
     Plug 'voldikss/vim-floaterm'
     Plug 'lukas-reineke/indent-blankline.nvim'
+    Plug 'Darazaki/indent-o-matic'
     " LSP
     Plug 'neovim/nvim-lspconfig'
     Plug 'kabouzeid/nvim-lspinstall'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-    Plug 'glepnir/lspsaga.nvim'
+"    Plug 'glepnir/lspsaga.nvim'
     Plug 'ray-x/lsp_signature.nvim' 
     " Cmp
     Plug 'hrsh7th/nvim-cmp'
