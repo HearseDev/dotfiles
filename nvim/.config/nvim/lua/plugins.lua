@@ -38,12 +38,18 @@ return packer.startup(function()
     end,
   }
 
-  use 'mhinz/vim-startify'
-  use 'jiangmiao/auto-pairs'
-  use 'preservim/nerdcommenter'
-  use 'junegunn/rainbow_parentheses.vim'
+  use {
+    'mhinz/vim-startify',
+    cond = function()
+      if vim.fn.empty(vim.fn.expand '%:t') ~= 1 then
+        return false
+      end
+      return true
+    end,
+    cmd = { 'Startify' },
+  }
   use 'dstein64/vim-startuptime'
-  use 'voldikss/vim-floaterm'
+  use { 'voldikss/vim-floaterm', cmd = { 'Floaterm*' } }
   use {
     'nvim-treesitter/nvim-treesitter',
     config = function()
@@ -52,11 +58,16 @@ return packer.startup(function()
           enable = true, -- false will disable the whole extension
         },
         indent = { enable = true },
+        autopairs = { enable = true },
       }
     end,
     run = ':TSUpdate',
   }
-
+  use {
+    'p00f/nvim-ts-rainbow',
+  }
+  use 'windwp/nvim-autopairs'
+  use 'b3nj5m1n/kommentary'
   use {
     'lukas-reineke/indent-blankline.nvim',
     config = function()
@@ -81,8 +92,11 @@ return packer.startup(function()
   use 'Darazaki/indent-o-matic'
   use {
     'kyazdani42/nvim-tree.lua',
-    config = function()
+    cmd = { 'NvimTree*' },
+    setup = function()
       vim.api.nvim_set_keymap('n', '<Space>e', ':NvimTreeToggle<CR>', { noremap = true })
+    end,
+    config = function()
       vim.g.nvim_tree_lsp_diagnostics = true
       vim.g.nvim_tree_icons = {
         lsp = {
@@ -103,6 +117,17 @@ return packer.startup(function()
     cmd = {
       'Telescope',
     },
+    setup = function()
+      vim.api.nvim_set_keymap('n', '<Leader>/', ':Telescope find_files<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<Leader>f', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap(
+        'n',
+        '<C-f>',
+        ':Telescope current_buffer_fuzzy_find<CR>',
+        { noremap = true, silent = true }
+      )
+      vim.api.nvim_set_keymap('n', '<Leader>qf', ':Telescope lsp_code_actions<CR>', { noremap = true, silent = true })
+    end,
     config = function()
       require('telescope').setup {
         pickers = {
@@ -125,12 +150,6 @@ return packer.startup(function()
       require('telescope').load_extension 'fzf'
     end,
   }
-  --Telescope keybinds
-  vim.api.nvim_set_keymap('n', '<Leader>/', ':Telescope find_files<CR>', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('n', '<Leader>f', ':Telescope live_grep<CR>', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('n', '<C-f>', ':Telescope current_buffer_fuzzy_find<CR>', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('n', '<Leader>qf', ':Telescope lsp_code_actions<CR>', { noremap = true, silent = true })
-
   use {
     'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
@@ -138,11 +157,13 @@ return packer.startup(function()
       require('gitsigns').setup()
     end,
   }
-  use 'neovim/nvim-lspconfig'
-  use 'kabouzeid/nvim-lspinstall'
-  use 'jose-elias-alvarez/null-ls.nvim'
+  local lang = { 'cpp', 'c', 'lua' }
   use {
     'hrsh7th/nvim-cmp',
+    ft = lang,
+    config = function()
+      require 'nvim-cmp'
+    end,
     requires = {
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'hrsh7th/cmp-nvim-lsp' },
@@ -154,4 +175,13 @@ return packer.startup(function()
       { 'ray-x/cmp-treesitter' },
     },
   }
+  use {
+    'neovim/nvim-lspconfig',
+    ft = lang,
+    config = function()
+      require 'lsp'
+    end,
+  }
+  use { 'kabouzeid/nvim-lspinstall', ft = lang }
+  use { 'jose-elias-alvarez/null-ls.nvim', ft = { 'lua' } }
 end)

@@ -46,11 +46,42 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
     'additionalTextEdits',
   },
 }
+--autopairs
+-- you need setup cmp first put this after cmp.setup()
+require('nvim-autopairs.completion.cmp').setup {
+  map_cr = true, --  map <CR> on insert mode
+  map_complete = true, -- it will auto insert `(` (map_char) after select function or method item
+  auto_select = true, -- automatically select the first item
+  insert = false, -- use insert confirm behavior instead of replace
+  map_char = { -- modifies the function or method delimiter by filetypes
+    all = '(',
+    tex = '{',
+  },
+}
+local npairs = require 'nvim-autopairs'
+local Rule = require 'nvim-autopairs.rule'
+npairs.setup {
+  check_ts = true,
+  enable_check_bracket_line = false,
+  ignored_next_char = '[%w%.]',
+  ts_config = {
+    lua = { 'string' }, -- it will not add a pair on that treesitter node
+    javascript = { 'template_string' },
+    java = false, -- don't check treesitter on java
+  },
+}
+local ts_conds = require 'nvim-autopairs.ts-conds'
 
---lint 
-require('null-ls').config({
-    sources = { require('null-ls').builtins.formatting.stylua }
-})
+-- press % => %% is only inside comment or string
+npairs.add_rules {
+  Rule('%', '%', 'lua'):with_pair(ts_conds.is_ts_node { 'string', 'comment' }),
+  Rule('$', '$', 'lua'):with_pair(ts_conds.is_not_ts_node { 'function' }),
+}
+
+--lint
+require('null-ls').config {
+  sources = { require('null-ls').builtins.formatting.stylua },
+}
 --LSPinstall
 local function setup_servers()
   require('lspinstall').setup()
@@ -69,9 +100,9 @@ require('lspinstall').post_install_hook = function()
   vim.cmd 'bufdo e'
 end
 
-require("lspconfig")["null-ls"].setup({
-    on_attach = my_custom_on_attach
-})
+require('lspconfig')['null-ls'].setup {
+  on_attach = on_attach,
+}
 
 --clangd setup
 require('lspconfig').clangd.setup {
@@ -91,10 +122,6 @@ require('lspconfig').sourcekit.setup {
   on_attach = on_attach,
   capabilities = capabilities,
 }
---lint
-
-
-
 --UI Customization
 --Basic Diagnostic settings
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -118,12 +145,6 @@ for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
 end
-
-
-
-
-
-
 
 --LspSaga
 --local saga = require 'lspsaga'
