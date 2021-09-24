@@ -32,9 +32,6 @@ set clipboard=unnamedplus
 set noshowmode
 " Enable Line Numbers
 set number
-" Init Theme
-let g:tokyonight_style = 'storm'
-colorscheme tokyonight
 " Set shift width(tab indentation width)
 set tabstop=4       " The width of a TAB is set to 4.
                     " Still it is a \t. It is just that

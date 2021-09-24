@@ -1,17 +1,20 @@
-local nvim_lsp = require('lspconfig')
-local cmpcapabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local nvim_lsp = require 'lspconfig'
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  local function buf_set_keymap(...)
+    vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
+  local function buf_set_option(...)
+    vim.api.nvim_buf_set_option(bufnr, ...)
+  end
 
---Enable completion triggered by <c-x><c-o>
+  --Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
+  local opts = { noremap = true, silent = true }
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -33,52 +36,71 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
   buf_set_keymap('n', '<space>o', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
 end
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+--local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {
     'documentation',
     'detail',
     'additionalTextEdits',
-  }
+  },
 }
+
+--lint 
+require('null-ls').config({
+    sources = { require('null-ls').builtins.formatting.stylua }
+})
 --LSPinstall
 local function setup_servers()
-  require'lspinstall'.setup()
-  local servers = require'lspinstall'.installed_servers()
+  require('lspinstall').setup()
+  local servers = require('lspinstall').installed_servers()
   for _, server in pairs(servers) do
-    require "lspconfig"[server].setup{
-      capabilities = cmpcapabilities, capabilities,
+    require('lspconfig')[server].setup {
+      capabilities = capabilities,
       on_attach = on_attach,
     }
   end
 end
 setup_servers()
 -- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require'lspinstall'.post_install_hook = function ()
+require('lspinstall').post_install_hook = function()
   setup_servers() -- reload installed servers
-  vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
+  vim.cmd 'bufdo e'
 end
 
+require("lspconfig")["null-ls"].setup({
+    on_attach = my_custom_on_attach
+})
+
 --clangd setup
-require "lspconfig".clangd.setup{
-    cmd = { "clangd","-clang-tidy", "--clang-tidy-checks=modernize-*,diagnostic-*,analyzer-*,performance-*,readability-*,llvm-*,bugprone-*,-readability-magic-numbers*,-llvm-include-order*,- modernize-use-trailing-return-type*", "--background-index=true"},
-    on_attach = on_attach,
-    capabilities = capabilities, cmpcapabilities
-  }
---sourcekit server
-require "lspconfig".sourcekit.setup{
-  cmd = { "/home/ubuntu/.swift/usr/bin/sourcekit-lsp" },
-  filetypes = { "swift"},
+require('lspconfig').clangd.setup {
+  cmd = {
+    'clangd',
+    '-clang-tidy',
+    '--clang-tidy-checks=modernize-*,diagnostic-*,analyzer-*,performance-*,readability-*,llvm-*,bugprone-*,-readability-magic-numbers*,-llvm-include-order*,- modernize-use-trailing-return-type*',
+    '--background-index=true',
+  },
   on_attach = on_attach,
-  capabilities = capabilities, cmpcapabilities
+  capabilities = capabilities,
 }
+--sourcekit server
+require('lspconfig').sourcekit.setup {
+  cmd = { '/home/ubuntu/.swift/usr/bin/sourcekit-lsp' },
+  filetypes = { 'swift' },
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+--lint
+
+
+
 --UI Customization
 --Basic Diagnostic settings
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   --virtual_text = {
-    --spacing = 4,
-    --prefix = '~',
+  --spacing = 4,
+  --prefix = '~',
   --},
   virtual_text = false,
   signs = true,
@@ -91,20 +113,25 @@ vim.o.updatetime = 10
 vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
 
 --GutterSigns
-local signs = { Error = "✗ ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = '✗ ', Warn = ' ', Hint = ' ', Info = ' ' }
 for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+  local hl = 'DiagnosticSign' .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
 end
+
+
+
+
+
 
 
 --LspSaga
 --local saga = require 'lspsaga'
 --saga.init_lsp_saga{
-  --use_saga_diagnostic_sign = false,
-  --code_action_prompt = {
-    --enable = false
-  --}
+--use_saga_diagnostic_sign = false,
+--code_action_prompt = {
+--enable = false
+--}
 --}
 --vim.api.nvim_set_keymap('n', '<leader>qf', '<CMD>lua require(\'lspsaga.codeaction\').code_action()<CR>' , { noremap = true, silent = true })
 --vim.api.nvim_set_keymap('v', '<leader>qf', '<CMD>lua require(\'lspsaga.codeaction\').range_code_action()<CR>' , { noremap = true, silent = true })
@@ -112,10 +139,6 @@ end
 --vim.api.nvim_set_keymap('n', '<leader>qr', '<CMD>lua require(\'lspsaga.rename\').rename()<CR>', { noremap = true, silent = true })
 ----lsp_signature
 --require "lsp_signature".setup{
-  --floating_window = false,
-  --hint_prefix = "כֿ "
+--floating_window = false,
+--hint_prefix = "כֿ "
 --}
-
-
-
-
