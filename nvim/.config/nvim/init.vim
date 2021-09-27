@@ -2,8 +2,8 @@
 lua require('impatient')
 lua require("plugins")
 source $HOME/.config/nvim/pluginconfig.vim
-lua require("nvim-cmp")
-lua require("lsp")
+"lua require("nvim-cmp")
+"lua require("lsp")
 "xm files
 au BufRead,BufNewFile *.xm set filetype=logos
 " Hidden for buffer
