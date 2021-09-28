@@ -1,1 +1,4 @@
 nvim/.config/nvim/plugs/.local/
+fish/.config/fish/conf.d/
+fish/.config/fish/functions/
+fish/.config/fish/completions/

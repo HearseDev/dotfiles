@@ -105,7 +105,7 @@ require('lspconfig')['null-ls'].setup {
 }
 
 --clangd setup
-require('lspconfig').clangd.setup {
+--[[ require('lspconfig').clangd.setup {
   cmd = {
     'clangd',
     '-clang-tidy',
@@ -121,7 +121,7 @@ require('lspconfig').sourcekit.setup {
   filetypes = { 'swift' },
   on_attach = on_attach,
   capabilities = capabilities,
-}
+} ]]
 --UI Customization
 --Basic Diagnostic settings
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {

@@ -15,19 +15,19 @@ set cursorline
 set termguicolors
 set ignorecase
 " Clipboard
-  let g:clipboard = {
-  \ 'name': 'win32yank',
-  \ 'copy': {
-  \    '+': 'win32yank.exe -i --crlf',
-  \    '*': 'win32yank.exe -i --crlf',
-  \  },
-  \ 'paste': {
-  \    '+': 'win32yank.exe -o --lf',
-  \    '*': 'win32yank.exe -o --lf',
-  \ },
-  \ 'cache_enabled': 0,
-  \ }
-set clipboard=unnamedplus
+  " let g:clipboard = {
+  " \ 'name': 'win32yank',
+  " \ 'copy': {
+  " \    '+': 'win32yank.exe -i --crlf',
+  " \    '*': 'win32yank.exe -i --crlf',
+  " \  },
+  " \ 'paste': {
+  " \    '+': 'win32yank.exe -o --lf',
+  " \    '*': 'win32yank.exe -o --lf',
+  " \ },
+  " \ 'cache_enabled': 0,
+  " \ }
+" set clipboard=unnamedplus
 " Hide Builtin Vim insert status
 set noshowmode
 " Enable Line Numbers

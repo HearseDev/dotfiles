@@ -179,33 +179,30 @@ return packer.startup {
         require('gitsigns').setup()
       end,
     }
-    local lang = { 'cpp', 'c', 'lua' }
     use {
       'hrsh7th/nvim-cmp',
-      ft = lang,
       config = function()
         require 'nvim-cmp'
       end,
 
       requires = {
-        { 'hrsh7th/cmp-nvim-lsp', ft = lang },
-        { 'hrsh7th/vim-vsnip', ft = lang },
-        { 'hrsh7th/cmp-vsnip', ft = lang },
-        { 'hrsh7th/cmp-buffer', ft = lang },
-        { 'hrsh7th/cmp-nvim-lua', ft = lang },
-        { 'hrsh7th/cmp-path', ft = lang },
-        { 'ray-x/cmp-treesitter', ft = lang },
+        { 'hrsh7th/cmp-nvim-lsp' },
+        { 'hrsh7th/vim-vsnip' },
+        { 'hrsh7th/cmp-vsnip' },
+        { 'hrsh7th/cmp-buffer' },
+        { 'hrsh7th/cmp-nvim-lua' },
+        { 'hrsh7th/cmp-path' },
+        { 'ray-x/cmp-treesitter' },
       },
     }
     use {
       'neovim/nvim-lspconfig',
-      ft = lang,
       config = function()
         require 'lsp'
       end,
     }
-    use { 'kabouzeid/nvim-lspinstall', ft = lang }
-    use { 'jose-elias-alvarez/null-ls.nvim', ft = { 'lua' } }
+    use { 'kabouzeid/nvim-lspinstall' }
+    use { 'jose-elias-alvarez/null-ls.nvim' }
   end,
   config = {
     display = {
