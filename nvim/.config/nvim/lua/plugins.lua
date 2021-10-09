@@ -38,7 +38,6 @@ return packer.startup {
         }
       end,
     }
-
     use {
       'goolord/alpha-nvim',
       cmd = { 'Alpha' },
@@ -83,9 +82,6 @@ return packer.startup {
         }
       end,
       run = ':TSUpdate',
-    }
-    use {
-      'p00f/nvim-ts-rainbow',
     }
     use 'windwp/nvim-autopairs'
     use 'b3nj5m1n/kommentary'
@@ -148,7 +144,10 @@ return packer.startup {
           ':Telescope current_buffer_fuzzy_find<CR>',
           { noremap = true, silent = true }
         )
-        vim.api.nvim_set_keymap('n', '<Leader>qf', ':Telescope lsp_code_actions<CR>', { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('n', '<Leader>qf', ':Telescope lsp_code_actions<CR>', {
+          noremap = true,
+          silent = true,
+        })
       end,
       config = function()
         require('telescope').setup {
@@ -179,6 +178,7 @@ return packer.startup {
         require('gitsigns').setup()
       end,
     }
+    local langs = { 'cpp', 'lua', 'c' }
     use {
       'hrsh7th/nvim-cmp',
       config = function()
@@ -186,23 +186,24 @@ return packer.startup {
       end,
 
       requires = {
-        { 'hrsh7th/cmp-nvim-lsp' },
-        { 'hrsh7th/vim-vsnip' },
-        { 'hrsh7th/cmp-vsnip' },
-        { 'hrsh7th/cmp-buffer' },
-        { 'hrsh7th/cmp-nvim-lua' },
-        { 'hrsh7th/cmp-path' },
-        { 'ray-x/cmp-treesitter' },
+        { 'hrsh7th/cmp-nvim-lsp', ft = langs },
+        { 'hrsh7th/vim-vsnip', ft = langs },
+        { 'hrsh7th/cmp-vsnip', ft = langs },
+        { 'hrsh7th/cmp-buffer', ft = langs },
+        { 'hrsh7th/cmp-nvim-lua', ft = langs },
+        { 'hrsh7th/cmp-path', ft = langs },
+        { 'ray-x/cmp-treesitter', ft = langs },
       },
     }
     use {
       'neovim/nvim-lspconfig',
+      ft = langs,
       config = function()
         require 'lsp'
       end,
     }
-    use { 'kabouzeid/nvim-lspinstall' }
-    use { 'jose-elias-alvarez/null-ls.nvim' }
+    use { 'kabouzeid/nvim-lspinstall', ft = langs }
+    use { 'jose-elias-alvarez/null-ls.nvim', ft = 'lua' }
   end,
   config = {
     display = {

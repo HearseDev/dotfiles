@@ -1,7 +1,7 @@
 #Start tmux
 if status is-interactive
-# don't nest inside another tmux
-and not set -q TMUX
+# don't nest inside another tmux 
+  and not set -q TMUX
   # Adapted from https://unix.stackexchange.com/a/176885/347104
   # Create session 'main' or attach to 'main' if already exists.
   tmux new-session -A -s main
@@ -11,6 +11,7 @@ set fish_greeting ""
 alias class="ssh cheema_0856412@server.lawtonsclass.com"
 alias b='sudo apt update -y;sudo apt upgrade -y;sudo apt clean -y;sudo apt autoclean -y;sudo apt autoremove -y;$THEOS/bin/update-theos;nvm install latest;omf update;fisher update;python3 ~/.gdbinit-gef.py --update;nvim +PackerSync +TSUpdateSync'
 alias nic='$THEOS/bin/nic.pl'
+alias gdb='gdb -q'
 # TokyoNight Color Palette
     set -l foreground c0caf5
     set -l selection 33467C
@@ -44,3 +45,8 @@ alias nic='$THEOS/bin/nic.pl'
     set -g fish_pager_color_prefix $cyan
     set -g fish_pager_color_completion $foreground
     set -g fish_pager_color_description $comment
+if status is-interactive
+and set -q TMUX
+    tmux source-file ~/.tmux.conf
+end
+
