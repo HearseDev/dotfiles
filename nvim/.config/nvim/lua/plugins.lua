@@ -6,11 +6,18 @@ return packer.startup {
     use 'wbthomason/packer.nvim'
     use 'lewis6991/impatient.nvim' --temp
     use {
-      'folke/tokyonight.nvim',
+      'marko-cerovac/material.nvim',
       config = function()
-        vim.g.tokyonight_style = 'storm'
-        vim.cmd ':colorscheme tokyonight'
+        vim.g.material_style = 'deep ocean'
+        vim.cmd ':colorscheme material'
       end,
+    }
+    use {
+      'folke/tokyonight.nvim',
+      --[[ config = function()
+        vim.g.tokyonight_style = 'night'
+        vim.cmd ':colorscheme tokyonight'
+      end, ]]
     }
     use 'kyazdani42/nvim-web-devicons'
     use {
@@ -102,7 +109,7 @@ return packer.startup {
           filetype_exclude = { 'help', 'alpha', 'packer', 'neogitstatus', 'NvimTree' },
           context_patterns = { 'while', 'if', 'for', 'method', 'function', 'class', 'struct' },
           indent_level = 4,
-          --let g:indent_blankline_show_first_indent_level = v:false
+          show_first_indent_level = false,
           show_trailing_blankline_indent = false,
         }
       end,
@@ -115,13 +122,15 @@ return packer.startup {
         vim.api.nvim_set_keymap('n', '<Space>e', ':NvimTreeToggle<CR>', { noremap = true })
       end,
       config = function()
-        vim.g.nvim_tree_lsp_diagnostics = true
-        vim.g.nvim_tree_icons = {
-          lsp = {
-            hint = '',
-            info = '',
-            warning = '',
-            error = '✗',
+        require('nvim-tree').setup {
+          diagnostics = {
+            enable = true,
+            icons = {
+              hint = '',
+              info = '',
+              warning = '',
+              error = '✗',
+            },
           },
         }
       end,
@@ -178,7 +187,7 @@ return packer.startup {
         require('gitsigns').setup()
       end,
     }
-    local langs = { 'cpp', 'lua', 'c' }
+    local langs = { 'cpp', 'lua', 'c', 'swift', 'logos' }
     use {
       'hrsh7th/nvim-cmp',
       config = function()

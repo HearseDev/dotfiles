@@ -54,3 +54,12 @@ cmp.setup {
     { name = 'nvim_lua' },
   },
 }
+
+vim.api.nvim_command([[autocmd FileType logos lua require'cmp'.setup.buffer {
+   sources = {
+     { name = 'vsnip' },
+     { name = 'buffer' },
+     { name = 'treesitter' },
+     { name = 'path' },
+   },
+ }]])

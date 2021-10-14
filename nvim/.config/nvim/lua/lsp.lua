@@ -102,10 +102,9 @@ end
 
 require('lspconfig')['null-ls'].setup {
   on_attach = on_attach,
+  capabilities = capabilities,
 }
-
---clangd setup
---[[ require('lspconfig').clangd.setup {
+require('lspconfig')['cpp'].setup {
   cmd = {
     'clangd',
     '-clang-tidy',
@@ -117,11 +116,11 @@ require('lspconfig')['null-ls'].setup {
 }
 --sourcekit server
 require('lspconfig').sourcekit.setup {
-  cmd = { '/home/ubuntu/.swift/usr/bin/sourcekit-lsp' },
+  cmd = { '/usr/bin/sourcekit-lsp' },
   filetypes = { 'swift' },
   on_attach = on_attach,
   capabilities = capabilities,
-} ]]
+}
 --UI Customization
 --Basic Diagnostic settings
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
