@@ -45,8 +45,3 @@ alias gdb='gdb -q'
     set -g fish_pager_color_prefix $cyan
     set -g fish_pager_color_completion $foreground
     set -g fish_pager_color_description $comment
-if status is-interactive
-and set -q TMUX
-    tmux source-file ~/.tmux.conf
-end
-

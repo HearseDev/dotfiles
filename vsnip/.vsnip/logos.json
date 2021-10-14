@@ -1,6 +1,6 @@
 {
   "@interface": {
-    "prefix": ["interface"],
+    "prefix": ["@interface"],
     "body": [
       "@interface ${1:class}",
       "\t$0",

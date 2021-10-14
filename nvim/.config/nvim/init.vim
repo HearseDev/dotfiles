@@ -3,7 +3,7 @@ lua require('impatient')
 lua require("plugins")
 source $HOME/.config/nvim/pluginconfig.vim
 "xm files
-" au BufRead,BufNewFile *.xm set filetype=logos
+au BufRead,BufNewFile *.xm set filetype=logos
 " Hidden for buffer
 set hidden
 " Set SignColumn to Number
@@ -42,17 +42,11 @@ set splitbelow
 set splitright
 nmap <F2> :45vs<bar>term<CR>
 " Make functions
-function CompileAndRun()
-  execute ':w'
-  execute ':make'
-  execute ':make run'
-endfunction
 function Compile()
   execute ':w'
-  execute ':make'
+  execute ':FloatermNew g++ -std=c++17 % -o %:r && ./%:r'
 endfunction
 " Set Shortcut for Functions
-noremap <C-\> :call CompileAndRun()<CR>
 noremap <C-]> :call Compile()<CR>
 
 " Auto-Completion Menu Config

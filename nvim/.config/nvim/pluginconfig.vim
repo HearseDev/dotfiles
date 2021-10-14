@@ -6,4 +6,3 @@ nnoremap <silent> <leader>1 :BufferLineCyclePrev<CR>
 " These commands will move the current buffer backwards or forwards in the bufferline
 nnoremap <silent> <leader>m2 :BufferLineMoveNext<CR>
 nnoremap <silent> <leader>m1 :BufferLineMovePrev<CR>
-
