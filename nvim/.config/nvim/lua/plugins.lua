@@ -1,6 +1,5 @@
 local packer = require 'packer'
 local use = packer.use
-
 return packer.startup {
   function()
     use 'wbthomason/packer.nvim'
@@ -28,10 +27,67 @@ return packer.startup {
     } -- fork of original
     use {
       'akinsho/bufferline.nvim',
+      setup = function()
+        vim.api.nvim_set_keymap('n', '<Leader>m1', [[<Cmd>BufferLineMovePrev<CR>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('n', '<Leader>m2', [[<Cmd>BufferLineMoveNext<CR>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>1',
+          [[<Cmd>BufferLineGoToBuffer 1<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>2',
+          [[<Cmd>BufferLineGoToBuffer 2<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>3',
+          [[<Cmd>BufferLineGoToBuffer 3<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>4',
+          [[<Cmd>BufferLineGoToBuffer 4<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>5',
+          [[<Cmd>BufferLineGoToBuffer 5<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>6',
+          [[<Cmd>BufferLineGoToBuffer 6<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>7',
+          [[<Cmd>BufferLineGoToBuffer 7<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>8',
+          [[<Cmd>BufferLineGoToBuffer 8<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>9',
+          [[<Cmd>BufferLineGoToBuffer 9<CR>]],
+          { noremap = true, silent = true }
+        )
+      end,
       config = function()
         require('bufferline').setup {
           options = {
-            --separator_style = "slant",
             close_command = 'bdelete! %d',
             diagnostics = 'nvim_lsp',
             diagnostics_indicator = function(count, level, diagnostics_dict, context)
@@ -94,6 +150,7 @@ return packer.startup {
     use 'b3nj5m1n/kommentary'
     use {
       'lukas-reineke/indent-blankline.nvim',
+      cmd = { '' },
       config = function()
         --[[ vim.opt.list = true
         vim.opt.listchars = {
@@ -187,7 +244,7 @@ return packer.startup {
         require('gitsigns').setup()
       end,
     }
-    local langs = { 'cpp', 'lua', 'c', 'swift', 'logos' }
+    local langs = { 'cpp', 'lua', 'c', 'swift', 'logos', 'python', 'vim' }
     use {
       'hrsh7th/nvim-cmp',
       config = function()
@@ -204,6 +261,7 @@ return packer.startup {
         { 'ray-x/cmp-treesitter', ft = langs },
       },
     }
+    use { 'jose-elias-alvarez/null-ls.nvim', ft = { 'lua' } }
     use {
       'neovim/nvim-lspconfig',
       ft = langs,
@@ -211,8 +269,7 @@ return packer.startup {
         require 'lsp'
       end,
     }
-    use { 'kabouzeid/nvim-lspinstall', ft = langs }
-    use { 'jose-elias-alvarez/null-ls.nvim', ft = 'lua' }
+    use { 'williamboman/nvim-lsp-installer', ft = langs , cmd = {'Lsp*'}}
   end,
   config = {
     display = {

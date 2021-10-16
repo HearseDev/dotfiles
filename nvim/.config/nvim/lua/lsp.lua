@@ -37,15 +37,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>o', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
 end
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
---local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  },
-}
+
 --autopairs
 -- you need setup cmp first put this after cmp.setup()
 require('nvim-autopairs.completion.cmp').setup {
@@ -78,42 +70,38 @@ npairs.add_rules {
   Rule('$', '$', 'lua'):with_pair(ts_conds.is_not_ts_node { 'function' }),
 }
 
---lint
+--LSPinstaller
+local lsp_installer = require 'nvim-lsp-installer'
+
+lsp_installer.on_server_ready(function(server)
+  local opts = {}
+  opts.capabilities = capabilities
+  opts.on_attach = on_attach
+  if server.name == 'clangd' then
+    opts.cmd = {
+      'clangd',
+      '-clang-tidy',
+      '--clang-tidy-checks=modernize-*,diagnostic-*,analyzer-*,performance-*,readability-*,llvm-*,bugprone-*,-readability-magic-numbers*,-llvm-include-order*,- modernize-use-trailing-return-type*',
+      '--background-index=true',
+    }
+    opts.capabilities = capabilities
+    opts.on_attach = on_attach
+  end
+  -- (optional) Customize the options passed to the server
+  -- if server.name == "tsserver" then
+  --     opts.root_dir = function() ... end
+  -- end
+
+  -- This setup() function is exactly the same as lspconfig's setup function (:help lspconfig-quickstart)
+  --
+  server:setup(opts)
+  vim.cmd [[ do User LspAttachBuffers ]]
+end)
+--lua format
 require('null-ls').config {
   sources = { require('null-ls').builtins.formatting.stylua },
 }
---LSPinstall
-local function setup_servers()
-  require('lspinstall').setup()
-  local servers = require('lspinstall').installed_servers()
-  for _, server in pairs(servers) do
-    require('lspconfig')[server].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-    }
-  end
-end
-setup_servers()
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require('lspinstall').post_install_hook = function()
-  setup_servers() -- reload installed servers
-  vim.cmd 'bufdo e'
-end
-
-require('lspconfig')['null-ls'].setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-require('lspconfig')['cpp'].setup {
-  cmd = {
-    'clangd',
-    '-clang-tidy',
-    '--clang-tidy-checks=modernize-*,diagnostic-*,analyzer-*,performance-*,readability-*,llvm-*,bugprone-*,-readability-magic-numbers*,-llvm-include-order*,- modernize-use-trailing-return-type*',
-    '--background-index=true',
-  },
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+require('lspconfig')['null-ls'].setup {}
 --sourcekit server
 require('lspconfig').sourcekit.setup {
   cmd = { '/usr/bin/sourcekit-lsp' },
@@ -121,6 +109,7 @@ require('lspconfig').sourcekit.setup {
   on_attach = on_attach,
   capabilities = capabilities,
 }
+
 --UI Customization
 --Basic Diagnostic settings
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -144,21 +133,3 @@ for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
 end
-
---LspSaga
---local saga = require 'lspsaga'
---saga.init_lsp_saga{
---use_saga_diagnostic_sign = false,
---code_action_prompt = {
---enable = false
---}
---}
---vim.api.nvim_set_keymap('n', '<leader>qf', '<CMD>lua require(\'lspsaga.codeaction\').code_action()<CR>' , { noremap = true, silent = true })
---vim.api.nvim_set_keymap('v', '<leader>qf', '<CMD>lua require(\'lspsaga.codeaction\').range_code_action()<CR>' , { noremap = true, silent = true })
-
---vim.api.nvim_set_keymap('n', '<leader>qr', '<CMD>lua require(\'lspsaga.rename\').rename()<CR>', { noremap = true, silent = true })
-----lsp_signature
---require "lsp_signature".setup{
---floating_window = false,
---hint_prefix = "כֿ "
---}

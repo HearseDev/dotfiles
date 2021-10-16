@@ -1,13 +1,12 @@
 "Sources
 lua require('impatient')
 lua require("plugins")
-source $HOME/.config/nvim/pluginconfig.vim
-"xm files
-au BufRead,BufNewFile *.xm set filetype=logos
+lua require("config")
 " Hidden for buffer
 set hidden
 " Set SignColumn to Number
 "set signcolumn=number
+"for indentline
 set nu rnu
 set cursorline
 set termguicolors
@@ -40,14 +39,7 @@ set mouse=a
 " Split Behavior / Terminal Shortcut
 set splitbelow
 set splitright
-nmap <F2> :45vs<bar>term<CR>
-" Make functions
-function Compile()
-  execute ':w'
-  execute ':FloatermNew g++ -std=c++17 % -o %:r && ./%:r'
-endfunction
-" Set Shortcut for Functions
-noremap <C-]> :call Compile()<CR>
+"nmap <F2> :45vs<bar>term<CR>
 
 " Auto-Completion Menu Config
 set completeopt=menuone,noselect

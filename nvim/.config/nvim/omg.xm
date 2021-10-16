@@ -1,4 +1,0 @@
-%hook
-%end
-%new
-%class
