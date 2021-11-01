@@ -20,7 +20,7 @@ return packer.startup {
     }
     use 'kyazdani42/nvim-web-devicons'
     use {
-      'shadmansaleh/lualine.nvim',
+      'nvim-lualine/lualine.nvim',
       config = function()
         require 'evil_lualine'
       end,
@@ -149,14 +149,26 @@ return packer.startup {
     use 'windwp/nvim-autopairs'
     use 'b3nj5m1n/kommentary'
     use {
-      'lukas-reineke/indent-blankline.nvim',
-      cmd = { '' },
+      'p00f/nvim-ts-rainbow',
       config = function()
-        --[[ vim.opt.list = true
+        require('nvim-treesitter.configs').setup {
+          rainbow = {
+            enable = true,
+            extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+            max_file_lines = nil, -- Do not enable for files with more than n lines, int
+            colors = { '#ee82ee ', '#4b0082', '#0000ff ', '#008000', '#ffff00', '#ffa500', '#ff0000' },
+          },
+        }
+      end,
+    }
+    --[[ use {
+      'lukas-reineke/indent-blankline.nvim',
+      config = function()
+        vim.opt.list = true
         vim.opt.listchars = {
           -- space = '⋅',
           eol = '↴',
-        } ]]
+        }
         require('indent_blankline').setup {
           show_end_of_line = false,
           space_char_blankline = '',
@@ -170,8 +182,8 @@ return packer.startup {
           show_trailing_blankline_indent = false,
         }
       end,
-    }
-    use 'Darazaki/indent-o-matic'
+    } ]]
+    -- use 'Darazaki/indent-o-matic'
     use {
       'kyazdani42/nvim-tree.lua',
       cmd = { 'NvimTree*' },
@@ -244,7 +256,6 @@ return packer.startup {
         require('gitsigns').setup()
       end,
     }
-    local langs = { 'cpp', 'lua', 'c', 'swift', 'logos', 'python', 'vim' }
     use {
       'hrsh7th/nvim-cmp',
       config = function()
@@ -252,24 +263,28 @@ return packer.startup {
       end,
 
       requires = {
-        { 'hrsh7th/cmp-nvim-lsp', ft = langs },
-        { 'hrsh7th/vim-vsnip', ft = langs },
-        { 'hrsh7th/cmp-vsnip', ft = langs },
-        { 'hrsh7th/cmp-buffer', ft = langs },
-        { 'hrsh7th/cmp-nvim-lua', ft = langs },
-        { 'hrsh7th/cmp-path', ft = langs },
-        { 'ray-x/cmp-treesitter', ft = langs },
+        { 'hrsh7th/cmp-nvim-lsp' },
+        { 'hrsh7th/vim-vsnip' },
+        { 'hrsh7th/cmp-vsnip' },
+        { 'hrsh7th/cmp-buffer' },
+        { 'hrsh7th/cmp-nvim-lua' },
+        { 'hrsh7th/cmp-path' },
+        { 'ray-x/cmp-treesitter' },
       },
     }
-    use { 'jose-elias-alvarez/null-ls.nvim', ft = { 'lua' } }
+    use { 'jose-elias-alvarez/null-ls.nvim' }
+    use {
+      'mhartington/formatter.nvim',
+      ft = { 'logos' },
+    }
+
     use {
       'neovim/nvim-lspconfig',
-      ft = langs,
       config = function()
         require 'lsp'
       end,
     }
-    use { 'williamboman/nvim-lsp-installer', ft = langs , cmd = {'Lsp*'}}
+    use { 'williamboman/nvim-lsp-installer' }
   end,
   config = {
     display = {

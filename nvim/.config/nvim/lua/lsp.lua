@@ -38,37 +38,6 @@ local on_attach = function(client, bufnr)
 end
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
---autopairs
--- you need setup cmp first put this after cmp.setup()
-require('nvim-autopairs.completion.cmp').setup {
-  map_cr = true, --  map <CR> on insert mode
-  map_complete = true, -- it will auto insert `(` (map_char) after select function or method item
-  auto_select = true, -- automatically select the first item
-  insert = false, -- use insert confirm behavior instead of replace
-  map_char = { -- modifies the function or method delimiter by filetypes
-    all = '(',
-    tex = '{',
-  },
-}
-local npairs = require 'nvim-autopairs'
-local Rule = require 'nvim-autopairs.rule'
-npairs.setup {
-  check_ts = true,
-  enable_check_bracket_line = false,
-  ignored_next_char = '[%w%.]',
-  ts_config = {
-    lua = { 'string' }, -- it will not add a pair on that treesitter node
-    javascript = { 'template_string' },
-    java = false, -- don't check treesitter on java
-  },
-}
-local ts_conds = require 'nvim-autopairs.ts-conds'
-
--- press % => %% is only inside comment or string
-npairs.add_rules {
-  Rule('%', '%', 'lua'):with_pair(ts_conds.is_ts_node { 'string', 'comment' }),
-  Rule('$', '$', 'lua'):with_pair(ts_conds.is_not_ts_node { 'function' }),
-}
 
 --LSPinstaller
 local lsp_installer = require 'nvim-lsp-installer'
@@ -119,12 +88,12 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
   --},
   virtual_text = false,
   signs = true,
-  underline = true,
-  update_in_insert = true,
+  underline = false,
+  update_in_insert = false,
 })
 
 --AutoshowHover
-vim.o.updatetime = 10
+vim.o.updatetime = 250
 vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
 
 --GutterSigns
