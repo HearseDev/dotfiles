@@ -1,33 +1,18 @@
 "Sources
 lua require('impatient')
 lua require("plugins")
-source $HOME/.config/nvim/pluginconfig.vim
-"lua require("nvim-cmp")
-"lua require("lsp")
-"xm files
-au BufRead,BufNewFile *.xm set filetype=logos
+lua require("config")
 " Hidden for buffer
 set hidden
 " Set SignColumn to Number
 "set signcolumn=number
+"for indentline
 set nu rnu
 set cursorline
 set termguicolors
 set ignorecase
-" Clipboard
-  let g:clipboard = {
-  \ 'name': 'win32yank',
-  \ 'copy': {
-  \    '+': 'win32yank.exe -i --crlf',
-  \    '*': 'win32yank.exe -i --crlf',
-  \  },
-  \ 'paste': {
-  \    '+': 'win32yank.exe -o --lf',
-  \    '*': 'win32yank.exe -o --lf',
-  \ },
-  \ 'cache_enabled': 0,
-  \ }
 set clipboard=unnamedplus
+
 " Hide Builtin Vim insert status
 set noshowmode
 " Enable Line Numbers
@@ -54,20 +39,7 @@ set mouse=a
 " Split Behavior / Terminal Shortcut
 set splitbelow
 set splitright
-nmap <F2> :45vs<bar>term<CR>
-" Make functions
-function CompileAndRun()
-  execute ':w'
-  execute ':make'
-  execute ':make run'
-endfunction
-function Compile()
-  execute ':w'
-  execute ':make'
-endfunction
-" Set Shortcut for Functions
-noremap <C-\> :call CompileAndRun()<CR>
-noremap <C-]> :call Compile()<CR>
+"nmap <F2> :45vs<bar>term<CR>
 
 " Auto-Completion Menu Config
 set completeopt=menuone,noselect

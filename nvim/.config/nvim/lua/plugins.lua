@@ -1,30 +1,93 @@
 local packer = require 'packer'
 local use = packer.use
-
 return packer.startup {
   function()
     use 'wbthomason/packer.nvim'
     use 'lewis6991/impatient.nvim' --temp
     use {
-      'folke/tokyonight.nvim',
+      'marko-cerovac/material.nvim',
       config = function()
-        vim.g.tokyonight_style = 'storm'
-        vim.cmd ':colorscheme tokyonight'
+        vim.g.material_style = 'deep ocean'
+        vim.cmd ':colorscheme material'
       end,
+    }
+    use {
+      'folke/tokyonight.nvim',
+      --[[ config = function()
+        vim.g.tokyonight_style = 'night'
+        vim.cmd ':colorscheme tokyonight'
+      end, ]]
     }
     use 'kyazdani42/nvim-web-devicons'
     use {
-      'shadmansaleh/lualine.nvim',
+      'nvim-lualine/lualine.nvim',
       config = function()
         require 'evil_lualine'
       end,
     } -- fork of original
     use {
       'akinsho/bufferline.nvim',
+      setup = function()
+        vim.api.nvim_set_keymap('n', '<Leader>m1', [[<Cmd>BufferLineMovePrev<CR>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('n', '<Leader>m2', [[<Cmd>BufferLineMoveNext<CR>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>1',
+          [[<Cmd>BufferLineGoToBuffer 1<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>2',
+          [[<Cmd>BufferLineGoToBuffer 2<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>3',
+          [[<Cmd>BufferLineGoToBuffer 3<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>4',
+          [[<Cmd>BufferLineGoToBuffer 4<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>5',
+          [[<Cmd>BufferLineGoToBuffer 5<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>6',
+          [[<Cmd>BufferLineGoToBuffer 6<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>7',
+          [[<Cmd>BufferLineGoToBuffer 7<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>8',
+          [[<Cmd>BufferLineGoToBuffer 8<CR>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n',
+          '<Leader>9',
+          [[<Cmd>BufferLineGoToBuffer 9<CR>]],
+          { noremap = true, silent = true }
+        )
+      end,
       config = function()
         require('bufferline').setup {
           options = {
-            --separator_style = "slant",
             close_command = 'bdelete! %d',
             diagnostics = 'nvim_lsp',
             diagnostics_indicator = function(count, level, diagnostics_dict, context)
@@ -38,7 +101,6 @@ return packer.startup {
         }
       end,
     }
-
     use {
       'goolord/alpha-nvim',
       cmd = { 'Alpha' },
@@ -84,19 +146,29 @@ return packer.startup {
       end,
       run = ':TSUpdate',
     }
-    use {
-      'p00f/nvim-ts-rainbow',
-    }
     use 'windwp/nvim-autopairs'
     use 'b3nj5m1n/kommentary'
     use {
+      'p00f/nvim-ts-rainbow',
+      config = function()
+        require('nvim-treesitter.configs').setup {
+          rainbow = {
+            enable = true,
+            extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+            max_file_lines = nil, -- Do not enable for files with more than n lines, int
+            colors = { '#ee82ee ', '#4b0082', '#0000ff ', '#008000', '#ffff00', '#ffa500', '#ff0000' },
+          },
+        }
+      end,
+    }
+    --[[ use {
       'lukas-reineke/indent-blankline.nvim',
       config = function()
-        --[[ vim.opt.list = true
+        vim.opt.list = true
         vim.opt.listchars = {
           -- space = '⋅',
           eol = '↴',
-        } ]]
+        }
         require('indent_blankline').setup {
           show_end_of_line = false,
           space_char_blankline = '',
@@ -106,12 +178,12 @@ return packer.startup {
           filetype_exclude = { 'help', 'alpha', 'packer', 'neogitstatus', 'NvimTree' },
           context_patterns = { 'while', 'if', 'for', 'method', 'function', 'class', 'struct' },
           indent_level = 4,
-          --let g:indent_blankline_show_first_indent_level = v:false
+          show_first_indent_level = false,
           show_trailing_blankline_indent = false,
         }
       end,
-    }
-    use 'Darazaki/indent-o-matic'
+    } ]]
+    -- use 'Darazaki/indent-o-matic'
     use {
       'kyazdani42/nvim-tree.lua',
       cmd = { 'NvimTree*' },
@@ -119,13 +191,15 @@ return packer.startup {
         vim.api.nvim_set_keymap('n', '<Space>e', ':NvimTreeToggle<CR>', { noremap = true })
       end,
       config = function()
-        vim.g.nvim_tree_lsp_diagnostics = true
-        vim.g.nvim_tree_icons = {
-          lsp = {
-            hint = '',
-            info = '',
-            warning = '',
-            error = '✗',
+        require('nvim-tree').setup {
+          diagnostics = {
+            enable = true,
+            icons = {
+              hint = '',
+              info = '',
+              warning = '',
+              error = '✗',
+            },
           },
         }
       end,
@@ -148,7 +222,10 @@ return packer.startup {
           ':Telescope current_buffer_fuzzy_find<CR>',
           { noremap = true, silent = true }
         )
-        vim.api.nvim_set_keymap('n', '<Leader>qf', ':Telescope lsp_code_actions<CR>', { noremap = true, silent = true })
+        vim.api.nvim_set_keymap('n', '<Leader>qf', ':Telescope lsp_code_actions<CR>', {
+          noremap = true,
+          silent = true,
+        })
       end,
       config = function()
         require('telescope').setup {
@@ -179,33 +256,35 @@ return packer.startup {
         require('gitsigns').setup()
       end,
     }
-    local lang = { 'cpp', 'c', 'lua' }
     use {
       'hrsh7th/nvim-cmp',
-      ft = lang,
       config = function()
         require 'nvim-cmp'
       end,
 
       requires = {
-        { 'hrsh7th/cmp-nvim-lsp', ft = lang },
-        { 'hrsh7th/vim-vsnip', ft = lang },
-        { 'hrsh7th/cmp-vsnip', ft = lang },
-        { 'hrsh7th/cmp-buffer', ft = lang },
-        { 'hrsh7th/cmp-nvim-lua', ft = lang },
-        { 'hrsh7th/cmp-path', ft = lang },
-        { 'ray-x/cmp-treesitter', ft = lang },
+        { 'hrsh7th/cmp-nvim-lsp' },
+        { 'hrsh7th/vim-vsnip' },
+        { 'hrsh7th/cmp-vsnip' },
+        { 'hrsh7th/cmp-buffer' },
+        { 'hrsh7th/cmp-nvim-lua' },
+        { 'hrsh7th/cmp-path' },
+        { 'ray-x/cmp-treesitter' },
       },
     }
+    use { 'jose-elias-alvarez/null-ls.nvim' }
+    use {
+      'mhartington/formatter.nvim',
+      ft = { 'logos' },
+    }
+
     use {
       'neovim/nvim-lspconfig',
-      ft = lang,
       config = function()
         require 'lsp'
       end,
     }
-    use { 'kabouzeid/nvim-lspinstall', ft = lang }
-    use { 'jose-elias-alvarez/null-ls.nvim', ft = { 'lua' } }
+    use { 'williamboman/nvim-lsp-installer' }
   end,
   config = {
     display = {

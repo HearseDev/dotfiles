@@ -37,91 +37,48 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>o', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
 end
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
---local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  },
-}
---autopairs
--- you need setup cmp first put this after cmp.setup()
-require('nvim-autopairs.completion.cmp').setup {
-  map_cr = true, --  map <CR> on insert mode
-  map_complete = true, -- it will auto insert `(` (map_char) after select function or method item
-  auto_select = true, -- automatically select the first item
-  insert = false, -- use insert confirm behavior instead of replace
-  map_char = { -- modifies the function or method delimiter by filetypes
-    all = '(',
-    tex = '{',
-  },
-}
-local npairs = require 'nvim-autopairs'
-local Rule = require 'nvim-autopairs.rule'
-npairs.setup {
-  check_ts = true,
-  enable_check_bracket_line = false,
-  ignored_next_char = '[%w%.]',
-  ts_config = {
-    lua = { 'string' }, -- it will not add a pair on that treesitter node
-    javascript = { 'template_string' },
-    java = false, -- don't check treesitter on java
-  },
-}
-local ts_conds = require 'nvim-autopairs.ts-conds'
 
--- press % => %% is only inside comment or string
-npairs.add_rules {
-  Rule('%', '%', 'lua'):with_pair(ts_conds.is_ts_node { 'string', 'comment' }),
-  Rule('$', '$', 'lua'):with_pair(ts_conds.is_not_ts_node { 'function' }),
-}
 
---lint
+--LSPinstaller
+local lsp_installer = require 'nvim-lsp-installer'
+
+lsp_installer.on_server_ready(function(server)
+  local opts = {}
+  opts.capabilities = capabilities
+  opts.on_attach = on_attach
+  if server.name == 'clangd' then
+    opts.cmd = {
+      'clangd',
+      '-clang-tidy',
+      '--clang-tidy-checks=modernize-*,diagnostic-*,analyzer-*,performance-*,readability-*,llvm-*,bugprone-*,-readability-magic-numbers*,-llvm-include-order*,- modernize-use-trailing-return-type*',
+      '--background-index=true',
+    }
+    opts.capabilities = capabilities
+    opts.on_attach = on_attach
+  end
+  -- (optional) Customize the options passed to the server
+  -- if server.name == "tsserver" then
+  --     opts.root_dir = function() ... end
+  -- end
+
+  -- This setup() function is exactly the same as lspconfig's setup function (:help lspconfig-quickstart)
+  --
+  server:setup(opts)
+  vim.cmd [[ do User LspAttachBuffers ]]
+end)
+--lua format
 require('null-ls').config {
   sources = { require('null-ls').builtins.formatting.stylua },
 }
---LSPinstall
-local function setup_servers()
-  require('lspinstall').setup()
-  local servers = require('lspinstall').installed_servers()
-  for _, server in pairs(servers) do
-    require('lspconfig')[server].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-    }
-  end
-end
-setup_servers()
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require('lspinstall').post_install_hook = function()
-  setup_servers() -- reload installed servers
-  vim.cmd 'bufdo e'
-end
-
-require('lspconfig')['null-ls'].setup {
-  on_attach = on_attach,
-}
-
---clangd setup
-require('lspconfig').clangd.setup {
-  cmd = {
-    'clangd',
-    '-clang-tidy',
-    '--clang-tidy-checks=modernize-*,diagnostic-*,analyzer-*,performance-*,readability-*,llvm-*,bugprone-*,-readability-magic-numbers*,-llvm-include-order*,- modernize-use-trailing-return-type*',
-    '--background-index=true',
-  },
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+require('lspconfig')['null-ls'].setup {}
 --sourcekit server
 require('lspconfig').sourcekit.setup {
-  cmd = { '/home/ubuntu/.swift/usr/bin/sourcekit-lsp' },
+  cmd = { '/usr/bin/sourcekit-lsp' },
   filetypes = { 'swift' },
   on_attach = on_attach,
   capabilities = capabilities,
 }
+
 --UI Customization
 --Basic Diagnostic settings
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -131,12 +88,12 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
   --},
   virtual_text = false,
   signs = true,
-  underline = true,
-  update_in_insert = true,
+  underline = false,
+  update_in_insert = false,
 })
 
 --AutoshowHover
-vim.o.updatetime = 10
+vim.o.updatetime = 250
 vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
 
 --GutterSigns
@@ -145,21 +102,3 @@ for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
 end
-
---LspSaga
---local saga = require 'lspsaga'
---saga.init_lsp_saga{
---use_saga_diagnostic_sign = false,
---code_action_prompt = {
---enable = false
---}
---}
---vim.api.nvim_set_keymap('n', '<leader>qf', '<CMD>lua require(\'lspsaga.codeaction\').code_action()<CR>' , { noremap = true, silent = true })
---vim.api.nvim_set_keymap('v', '<leader>qf', '<CMD>lua require(\'lspsaga.codeaction\').range_code_action()<CR>' , { noremap = true, silent = true })
-
---vim.api.nvim_set_keymap('n', '<leader>qr', '<CMD>lua require(\'lspsaga.rename\').rename()<CR>', { noremap = true, silent = true })
-----lsp_signature
---require "lsp_signature".setup{
---floating_window = false,
---hint_prefix = "כֿ "
---}
