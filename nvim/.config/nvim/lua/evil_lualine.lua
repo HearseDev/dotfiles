@@ -139,7 +139,7 @@ ins_left { 'progress', color = { fg = colors.fg, gui = 'bold' } }
 
 ins_left {
   'diagnostics',
-  sources = { 'nvim_lsp' },
+  sources = { 'coc' },
   symbols = { error = '✗ ', warn = ' ', info = ' ' },
   diagnostics_color = {
     color_error = { fg = colors.red },

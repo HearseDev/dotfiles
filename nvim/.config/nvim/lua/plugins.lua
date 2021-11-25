@@ -11,13 +11,6 @@ return packer.startup {
         vim.cmd ':colorscheme material'
       end,
     }
-    use {
-      'folke/tokyonight.nvim',
-      --[[ config = function()
-        vim.g.tokyonight_style = 'night'
-        vim.cmd ':colorscheme tokyonight'
-      end, ]]
-    }
     use 'kyazdani42/nvim-web-devicons'
     use {
       'nvim-lualine/lualine.nvim',
@@ -146,43 +139,57 @@ return packer.startup {
       end,
       run = ':TSUpdate',
     }
-    use 'windwp/nvim-autopairs'
-    use 'b3nj5m1n/kommentary'
     use {
-      'p00f/nvim-ts-rainbow',
+      'windwp/nvim-ts-autotag',
       config = function()
-        require('nvim-treesitter.configs').setup {
-          rainbow = {
-            enable = true,
-            extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-            max_file_lines = nil, -- Do not enable for files with more than n lines, int
-            colors = { '#ee82ee ', '#4b0082', '#0000ff ', '#008000', '#ffff00', '#ffa500', '#ff0000' },
+        require('nvim-ts-autotag').setup()
+      end,
+    }
+    use {
+      'windwp/nvim-autopairs',
+      config = function()
+        local npairs = require 'nvim-autopairs'
+
+        local Rule = require 'nvim-autopairs.rule'
+        npairs.setup {
+          check_ts = true,
+          ts_config = {
+            lua = { 'string' }, -- it will not add a pair on that treesitter node
+            javascript = { 'template_string' },
+            java = false, -- don't check treesitter on java
           },
+        }
+
+        local ts_conds = require 'nvim-autopairs.ts-conds'
+
+        -- press % => %% is only inside comment or string
+        npairs.add_rules {
+          Rule('%', '%', 'lua'):with_pair(ts_conds.is_ts_node { 'string', 'comment' }),
+          Rule('$', '$', 'lua'):with_pair(ts_conds.is_not_ts_node { 'function' }),
         }
       end,
     }
-    --[[ use {
+    use 'b3nj5m1n/kommentary'
+
+    use {
       'lukas-reineke/indent-blankline.nvim',
       config = function()
         vim.opt.list = true
-        vim.opt.listchars = {
-          -- space = '⋅',
-          eol = '↴',
-        }
+        vim.opt.listchars:append 'space:⋅'
+        vim.opt.listchars:append 'eol:↴'
         require('indent_blankline').setup {
-          show_end_of_line = false,
-          space_char_blankline = '',
+          show_end_of_line = true,
+          space_char_blankline = ' ',
           use_treesitter = true,
           show_current_context = true,
           buftype_exclude = { 'terminal', 'telescope' },
           filetype_exclude = { 'help', 'alpha', 'packer', 'neogitstatus', 'NvimTree' },
-          context_patterns = { 'while', 'if', 'for', 'method', 'function', 'class', 'struct' },
-          indent_level = 4,
+          -- context_patterns = { 'while', 'if', 'for', 'method', 'function', 'class', 'struct' },
           show_first_indent_level = false,
           show_trailing_blankline_indent = false,
         }
       end,
-    } ]]
+    }
     -- use 'Darazaki/indent-o-matic'
     use {
       'kyazdani42/nvim-tree.lua',
@@ -256,6 +263,7 @@ return packer.startup {
         require('gitsigns').setup()
       end,
     }
+    --native lsp
     use {
       'hrsh7th/nvim-cmp',
       config = function()
@@ -264,7 +272,12 @@ return packer.startup {
 
       requires = {
         { 'hrsh7th/cmp-nvim-lsp' },
-        { 'hrsh7th/vim-vsnip' },
+        {
+          'hrsh7th/vim-vsnip',
+          config = function()
+            vim.cmd [[let g:vsnip_snippet_dir = expand('~/.config/vsnip')]]
+          end,
+        },
         { 'hrsh7th/cmp-vsnip' },
         { 'hrsh7th/cmp-buffer' },
         { 'hrsh7th/cmp-nvim-lua' },

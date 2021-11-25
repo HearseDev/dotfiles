@@ -34,10 +34,9 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-  buf_set_keymap('n', '<space>o', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
 end
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 --LSPinstaller
 local lsp_installer = require 'nvim-lsp-installer'
@@ -52,6 +51,10 @@ lsp_installer.on_server_ready(function(server)
       '-clang-tidy',
       '--clang-tidy-checks=modernize-*,diagnostic-*,analyzer-*,performance-*,readability-*,llvm-*,bugprone-*,-readability-magic-numbers*,-llvm-include-order*,- modernize-use-trailing-return-type*',
       '--background-index=true',
+    }
+
+    opts.init_options = {
+      fallbackFlags = { '-std=c++20' },
     }
     opts.capabilities = capabilities
     opts.on_attach = on_attach
@@ -68,7 +71,7 @@ lsp_installer.on_server_ready(function(server)
 end)
 --lua format
 require('null-ls').config {
-  sources = { require('null-ls').builtins.formatting.stylua },
+  sources = { require('null-ls').builtins.formatting.stylua, require('null-ls').builtins.formatting.prettierd },
 }
 require('lspconfig')['null-ls'].setup {}
 --sourcekit server
