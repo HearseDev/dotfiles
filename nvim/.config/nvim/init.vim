@@ -1,9 +1,9 @@
 "Sources
 lua require('impatient')
-lua require("plugins")
-lua require("config")
+lua require('plugins')
+lua require('config')
 " Hidden for buffer
-set hidden
+"set hidden
 " Set SignColumn to Number
 "set signcolumn=number
 "for indentline
@@ -56,4 +56,3 @@ set nofoldenable "no folds enabled when file opened
 " Delete Buffers
 nnoremap <silent> <leader>c :bd<CR>
 nnoremap <silent> <leader><Bs> :bd!<CR>
-nnoremap <F5> :source ~/.config/nvim/init.vim <CR>

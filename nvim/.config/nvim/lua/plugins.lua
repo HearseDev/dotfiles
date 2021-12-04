@@ -2,13 +2,76 @@ local packer = require 'packer'
 local use = packer.use
 return packer.startup {
   function()
+    vim.cmd [[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  augroup end
+  ]]
     use 'wbthomason/packer.nvim'
     use 'lewis6991/impatient.nvim' --temp
+    use { 'marko-cerovac/material.nvim' }
+    use { 'folke/tokyonight.nvim' }
     use {
-      'marko-cerovac/material.nvim',
+      'catppuccin/nvim',
       config = function()
-        vim.g.material_style = 'deep ocean'
-        vim.cmd ':colorscheme material'
+        vim.cmd [[colorscheme catppuccin]]
+        local catppuccin = require 'catppuccin'
+
+        -- configure it
+        catppuccin.setup {
+          transparent_background = false,
+          term_colors = false,
+          styles = {
+            comments = 'italic',
+            functions = 'italic',
+            keywords = 'italic',
+            strings = 'NONE',
+            variables = 'NONE',
+          },
+          integrations = {
+            treesitter = true,
+            native_lsp = {
+              enabled = true,
+              virtual_text = {
+                errors = 'italic',
+                hints = 'italic',
+                warnings = 'italic',
+                information = 'italic',
+              },
+              underlines = {
+                errors = 'underline',
+                hints = 'underline',
+                warnings = 'underline',
+                information = 'underline',
+              },
+            },
+            lsp_trouble = false,
+            lsp_saga = false,
+            gitgutter = false,
+            gitsigns = true,
+            telescope = true,
+            nvimtree = {
+              enabled = true,
+              show_root = true,
+            },
+            which_key = false,
+            indent_blankline = {
+              enabled = true,
+              colored_indent_levels = true,
+            },
+            dashboard = false,
+            neogit = false,
+            vim_sneak = false,
+            fern = false,
+            barbar = false,
+            bufferline = true,
+            markdown = false,
+            lightspeed = false,
+            ts_rainbow = false,
+            hop = false,
+          },
+        }
       end,
     }
     use 'kyazdani42/nvim-web-devicons'
@@ -141,6 +204,7 @@ return packer.startup {
     }
     use {
       'windwp/nvim-ts-autotag',
+      ft = 'html',
       config = function()
         require('nvim-ts-autotag').setup()
       end,
@@ -174,6 +238,7 @@ return packer.startup {
     use {
       'lukas-reineke/indent-blankline.nvim',
       config = function()
+        vim.opt.termguicolors = true
         vim.opt.list = true
         vim.opt.listchars:append 'space:⋅'
         vim.opt.listchars:append 'eol:↴'
@@ -199,7 +264,7 @@ return packer.startup {
       end,
       config = function()
         require('nvim-tree').setup {
-          diagnostics = {
+          --[[ diagnostics = {
             enable = true,
             icons = {
               hint = '',
@@ -207,7 +272,7 @@ return packer.startup {
               warning = '',
               error = '✗',
             },
-          },
+          }, ]]
         }
       end,
     }

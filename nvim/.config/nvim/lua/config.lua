@@ -1,11 +1,8 @@
-local vim = vim
-
 function _G.getDefault(key)
   --base
   if vim.g.compilecmd ~= nil and vim.g.compilecmd ~= '' and key == 1 then
     return vim.g.compilecmd
   end
-
   if vim.g.compilecmd2 ~= nil and vim.g.compilecmd2 ~= '' and key == 2 then
     return vim.g.compilecmd2
   end
@@ -15,9 +12,9 @@ function _G.getDefault(key)
   local ftype = vim.bo.filetype
   if ftype == 'cpp' then
     if vim.fn.filereadable(vim.fn.getcwd() .. '/Makefile') == 1 then
-      def = 'make -j8 clean && make -j8'
+      def = '(make -j8 clean; make -j8)'
     else
-      def = 'g++ -std=c++17 ' .. ext .. ' -o ' .. fname .. ' && ./' .. fname
+      def = '(g++ -std=c++17 ' .. ext .. ' -o ' .. fname .. '; ./' .. fname .. ')'
     end
   elseif ftype == 'python' then
     def = 'python ' .. ext
@@ -30,6 +27,7 @@ end
 function _G.editCommand(key)
   local default = getDefault(1)
   local default2 = getDefault(2)
+  
   if key == 1 or key == nil then
     local input = vim.fn.input('Primary Command: ', default, 'file')
     if input ~= '' and input ~= nil then
@@ -56,6 +54,7 @@ function _G.callCommand()
 end
 
 function _G.callSecondaryCommand()
+
   if vim.g.compilecmd2 == nil or vim.g.compilecmd2 == '' then
     editCommand(2)
   end
@@ -65,7 +64,10 @@ function _G.callSecondaryCommand()
     vim.api.nvim_command ":execute 'FloatermNew' expand(compilecmd2)"
   end
 end
-vim.api.nvim_command 'map <silent> <buffer> <C-]> :lua callCommand() <CR>'
+--[[ vim.api.nvim_command 'map <silent> <buffer> <C-]> :lua callCommand() <CR>'
 vim.api.nvim_command 'map <silent> <buffer> <C-\\> :lua callSecondaryCommand() <CR>'
-vim.api.nvim_command 'map <silent> <buffer> <leader>\' :lua editCommand() <CR>'
+vim.api.nvim_command "map <silent> <buffer> <leader>' :lua editCommand() <CR>" ]]
 
+vim.api.nvim_set_keymap('n', '<C-]>', [[:lua callCommand()<CR>]], { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', '<C-\\>', [[:lua callSecondaryCommand()<CR>]], { noremap = true, silent = false })
+vim.api.nvim_set_keymap('n', "<Leader>'", [[:lua editCommand()<CR>]], { noremap = true, silent = false })

@@ -1,5 +1,4 @@
 local nvim_lsp = require 'lspconfig'
-
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
@@ -58,6 +57,12 @@ lsp_installer.on_server_ready(function(server)
     }
     opts.capabilities = capabilities
     opts.on_attach = on_attach
+  elseif server.name == 'sumneko_lua' then
+    opts.settings = {
+      Lua = {
+        diagnostics = { globals = 'vim' },
+      },
+    }
   end
   -- (optional) Customize the options passed to the server
   -- if server.name == "tsserver" then
@@ -73,9 +78,9 @@ end)
 require('null-ls').config {
   sources = { require('null-ls').builtins.formatting.stylua, require('null-ls').builtins.formatting.prettierd },
 }
-require('lspconfig')['null-ls'].setup {}
+nvim_lsp['null-ls'].setup {}
 --sourcekit server
-require('lspconfig').sourcekit.setup {
+nvim_lsp.sourcekit.setup {
   cmd = { '/usr/bin/sourcekit-lsp' },
   filetypes = { 'swift' },
   on_attach = on_attach,
@@ -105,3 +110,16 @@ for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
 end
+
+--[[ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+            vim.lsp.handlers.signature_help, {
+                border = 'rounded',
+                close_events = {"CursorMoved", "BufHidden", "InsertCharPre"},
+    }
+)
+
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+            vim.lsp.handlers.hover, {
+                border = 'rounded',
+    }
+) ]]

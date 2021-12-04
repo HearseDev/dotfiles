@@ -1,5 +1,4 @@
 local cmp = require 'cmp'
-
 --autopairs
 -- If you want insert `(` after select function or method items
 require('nvim-autopairs').setup {}

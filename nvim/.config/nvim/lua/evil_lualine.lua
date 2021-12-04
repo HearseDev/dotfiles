@@ -47,7 +47,8 @@ local config = {
     --    inactive = { c = { fg = colors.fg, bg = colors.bg } },
     --    },
     --theme = 'tokyonight',
-    theme = 'material-nvim',
+    -- theme = 'material-nvim',
+    theme = 'catppuccin',
   },
   sections = {
     -- these are to remove the defaults
