@@ -15,8 +15,6 @@ set clipboard=unnamedplus
 
 " Hide Builtin Vim insert status
 set noshowmode
-" Enable Line Numbers
-set number
 " Set shift width(tab indentation width)
 " set tabstop=4       " The width of a TAB is set to 4.
 "                     " Still it is a \t. It is just that
