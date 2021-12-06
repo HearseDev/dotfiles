@@ -55,3 +55,9 @@ set nofoldenable "no folds enabled when file opened
 " Delete Buffers
 nnoremap <silent> <leader>c :bd<CR>
 nnoremap <silent> <leader><Bs> :bd!<CR>
+
+autocmd BufNewFile,BufRead *.xm,*.x :set filetype=logos
+nnoremap <silent> <space>f :Format<CR>
+" augroup filetypedetect
+"     autocmd BufNew,BufNewFile,BufRead *.xm,*.x,*.md, :setfiletype logos
+" augroup END

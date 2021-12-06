@@ -353,7 +353,7 @@ return packer.startup {
     use { 'jose-elias-alvarez/null-ls.nvim' }
     use {
       'mhartington/formatter.nvim',
-      ft = { 'logos' },
+      -- ft = { 'logos' },
     }
 
     use {
