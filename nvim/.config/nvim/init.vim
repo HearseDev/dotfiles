@@ -1,7 +1,8 @@
 "Sources
 lua require('impatient')
 lua require('plugins')
-lua require('config')
+" lua require('config')
+lua require('remaster')
 " Hidden for buffer
 "set hidden
 " Set SignColumn to Number
