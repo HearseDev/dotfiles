@@ -72,20 +72,18 @@ vim.api.nvim_set_keymap('n', "<Leader>'3", [[:lua editCommand(2)<CR>]], { norema
 vim.api.nvim_set_keymap('n', "<Leader>'4", [[:lua editCommand(3)<CR>]], { noremap = true, silent = false })
 vim.api.nvim_set_keymap('n', "<Leader>'5", [[:lua editCommand(4)<CR>]], { noremap = true, silent = false })
 
-
-
-require('formatter').setup({
+require('formatter').setup {
   filetype = {
     logos = {
-        -- clang-format
-       function()
-          return {
-            exe = "/home/admin/logos-format/new",
-            -- args = {"--assume-filename", vim.api.nvim_buf_get_name(0},
-            stdin = true,
-            cwd = vim.fn.expand('%:p:h')  -- Run clang-format in cwd of the file.
-          }
-        end
+      -- clang-format
+      function()
+        return {
+          exe = os.getenv 'HOME' .. '/logos-format/logos-format',
+          -- args = {"--assume-filename", vim.api.nvim_buf_get_name(0},
+          stdin = true,
+          cwd = vim.fn.expand '%:p:h',  -- Run clang-format in cwd of the file.
+        }
+      end,
     },
-  }
-})
+  },
+}
