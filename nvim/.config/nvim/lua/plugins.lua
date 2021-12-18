@@ -264,7 +264,7 @@ return packer.startup {
       end,
       config = function()
         require('nvim-tree').setup {
-          --[[ diagnostics = {
+          diagnostics = {
             enable = true,
             icons = {
               hint = '',
@@ -272,7 +272,7 @@ return packer.startup {
               warning = '',
               error = '✗',
             },
-          }, ]]
+          },
         }
       end,
     }

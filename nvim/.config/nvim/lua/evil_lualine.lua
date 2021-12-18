@@ -39,16 +39,10 @@ local config = {
     -- Disable sections and component separators
     component_separators = '',
     section_separators = '',
-    --    theme = {
+    theme = 'catppuccin',
     -- We are going to use lualine_c an lualine_x as left and
     -- right section. Both are highlighted by c theme .  So we
     -- are just setting default looks o statusline
-    --      normal = { c = { fg = colors.fg, bg = colors.bg } },
-    --    inactive = { c = { fg = colors.fg, bg = colors.bg } },
-    --    },
-    --theme = 'tokyonight',
-    -- theme = 'material-nvim',
-    theme = 'catppuccin',
   },
   sections = {
     -- these are to remove the defaults
@@ -140,7 +134,7 @@ ins_left { 'progress', color = { fg = colors.fg, gui = 'bold' } }
 
 ins_left {
   'diagnostics',
-  sources = { 'coc' },
+  sources = { 'nvim_diagnostic' },
   symbols = { error = '✗ ', warn = ' ', info = ' ' },
   diagnostics_color = {
     color_error = { fg = colors.red },
@@ -148,7 +142,6 @@ ins_left {
     color_info = { fg = colors.cyan },
   },
 }
-ins_left { 'filetype' }
 
 -- Insert mid section. You can make any number of sections in neovim :)
 -- for lualine it's any number greater then 2
