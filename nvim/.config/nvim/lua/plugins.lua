@@ -359,7 +359,7 @@ return packer.startup {
     use {
       'neovim/nvim-lspconfig',
       config = function()
-        require 'lsp'
+       -- require 'lsp'
       end,
     }
     use { 'williamboman/nvim-lsp-installer' }

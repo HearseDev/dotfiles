@@ -32,6 +32,8 @@ function _G.getDefault(key)
     elseif ftype == 'c' then
       default = '(gcc ' .. ext .. ' -o ' .. fname .. '; ./' .. fname .. ')'
     end
+  elseif ftype == 'logos' then
+    default = '--autoclose=1(make clean all -j8)'
   elseif ftype == 'make' then
     default = '(make clean; make)'
   elseif ftype == 'python' then
@@ -79,7 +81,7 @@ require('formatter').setup {
       function()
         return {
           exe = "python3" ,
-          args = {os.getenv 'HOME' .. '/logos-format/logos-format.py',"--assume-filename", "objc"},
+          args = {os.getenv 'HOME' .. '/projects/logos-format/logos-format.py',"--assume-filename", "objc"},
           stdin = true,
           cwd = vim.fn.expand '%:p:h',  -- Run clang-format in cwd of the file.
         }
