@@ -12,10 +12,11 @@ return packer.startup {
     use 'lewis6991/impatient.nvim' --temp
     use { 'marko-cerovac/material.nvim' }
     use { 'folke/tokyonight.nvim' }
-    use {'shaunsingh/nord.nvim',
-    config = function()
-              vim.cmd [[colorscheme nord]]
-    end,
+    use {
+      'shaunsingh/nord.nvim',
+      config = function()
+        vim.cmd [[colorscheme nord]]
+      end,
     }
     use {
       'catppuccin/nvim',
@@ -260,14 +261,11 @@ return packer.startup {
         }
       end,
     }
-    -- use 'Darazaki/indent-o-matic'
+
     use {
       'kyazdani42/nvim-tree.lua',
-      cmd = { 'NvimTree*' },
-      setup = function()
-        vim.api.nvim_set_keymap('n', '<Space>e', ':NvimTreeToggle<CR>', { noremap = true })
-      end,
       config = function()
+        vim.api.nvim_set_keymap('n', '<space>e', ':NvimTreeToggle<CR>', { noremap = true })
         require('nvim-tree').setup {
           diagnostics = {
             enable = true,
@@ -355,7 +353,17 @@ return packer.startup {
         { 'ray-x/cmp-treesitter' },
       },
     }
-    use { 'jose-elias-alvarez/null-ls.nvim' }
+    use {
+      'jose-elias-alvarez/null-ls.nvim',
+      config = function()
+        require('null-ls').setup {
+          sources = {
+            require('null-ls').builtins.formatting.stylua,
+            require('null-ls').builtins.formatting.prettierd,
+          },
+        }
+      end,
+    }
     use {
       'mhartington/formatter.nvim',
       -- ft = { 'logos' },
@@ -364,7 +372,7 @@ return packer.startup {
     use {
       'neovim/nvim-lspconfig',
       config = function()
-       -- require 'lsp'
+        require 'lsp'
       end,
     }
     use { 'williamboman/nvim-lsp-installer' }

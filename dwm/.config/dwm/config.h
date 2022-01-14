@@ -78,7 +78,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "kitty", NULL };
 
 static const char *medplaypausecmd[] = { "playerctl", "play-pause", NULL };
 static const char *mednextcmd[] = { "playerctl", "next", NULL };
@@ -92,7 +92,6 @@ static const char *brightnessdown[]={"xbacklight", "-dec", "5",NULL};
 
 
 static const char *rofi[]={"rofi","-theme", ".config/rofi/nord.rasi","-font","Liga SFMono Nerd Font 9","-show","drun",NULL};
-static const char *kitty[]={"kitty",NULL};
 static const char *flameshot[]={"flameshot", "gui",NULL};
 static const char *thunar[]={"thunar",NULL};
 static const char *firefox[]={"firefox",NULL};
@@ -106,7 +105,7 @@ static const char *firefox[]={"firefox",NULL};
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_space,  spawn,          {.v = rofi} },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd} },
+	{ MODKEY,             XK_Return, spawn,          {.v = termcmd} },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -136,7 +135,6 @@ static Key keys[] = {
 	TAGKEYS(                        XK_6,                      5)
 	{ MODKEY|ShiftMask,             XK_q,          quit,       {0} },
 	{ MODKEY,                       XK_w,          spawn,      SHCMD("feh --bg-fill $(find $HOME/Pictures/Wallpapers -type f | shuf -n 1)") },
-	{ MODKEY,                       XK_Return,     spawn,      {.v = kitty} },
 	{ MODKEY,                       XK_apostrophe, spawn,      {.v = firefox} },
 	{ MODKEY,                       XK_semicolon,  spawn,      {.v = thunar} },
 	{ MODKEY,                       XK_Print,      spawn,      {.v = flameshot} },
