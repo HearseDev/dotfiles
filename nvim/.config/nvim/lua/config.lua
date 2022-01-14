@@ -32,7 +32,7 @@ function _G.getDefault(key)
     elseif ftype == 'c' then
       default = '(gcc ' .. ext .. ' -o ' .. fname .. '; ./' .. fname .. ')'
     end
-  elseif (ftype == 'logos' or ftype == 'objc') then
+  elseif (ftype == 'logos' or ftype == 'objc' or ftype == 'objcpp') then
     if key == 0 then
       default = '--autoclose=1 (make clean all -j8)'
     elseif key == 1 then
