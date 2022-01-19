@@ -48,7 +48,6 @@ lsp_installer.on_server_ready(function(server)
 
   if server.name == 'clangd' then
     opts.filetypes = { 'c', 'cpp' }
-
     opts.cmd = {
       'clangd',
       '-clang-tidy',
@@ -60,24 +59,21 @@ lsp_installer.on_server_ready(function(server)
         fallbackFlags = { '-std=c++20' },
       }
     end
-    opts.capabilities = capabilities
-    opts.on_attach = on_attach
+    opts.on_attach = function(client,bufnr)
+      vim.api.nvim_buf_set_keymap(vim.api.nvim_get_current_buf(),'n', '<space>o', '<cmd>ClangdSwitchSourceHeader<CR>',{ noremap = true, silent = true })
+      on_attach(client,bufnr)
+    end
   elseif server.name == 'sumneko_lua' then
     opts.settings = {
       Lua = {
         diagnostics = { globals = 'vim' },
       },
     }
+  elseif server.name == 'sourcekit' then
+    opts.filetypes = {'swift'}
   end
   server:setup(opts)
 end)
---sourcekit server
-nvim_lsp.sourcekit.setup {
-  cmd = { '/usr/bin/sourcekit-lsp' },
-  filetypes = { 'swift' },
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
 
 --Basic Diagnostic settings
 vim.diagnostic.config {

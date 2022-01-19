@@ -27,7 +27,6 @@ static const char *colors[][3]      = {
 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
 };
 
-
 static const char *const autostart[] = {
   "bash","-c","$HOME/.config/dwm/bar.sh", NULL,
 	"nm-applet", NULL,
@@ -79,28 +78,18 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "kitty", NULL };
-
 static const char *medplaypausecmd[] = { "playerctl", "play-pause", NULL };
 static const char *mednextcmd[] = { "playerctl", "next", NULL };
 static const char *medprevcmd[] = { "playerctl", "previous", NULL };
 static const char *medvolup[]={"amixer", "-q", "-D", "pulse", "sset", "Master", "5%+",NULL};
 static const char *medvoldown[]={"amixer", "-q", "-D", "pulse", "sset", "Master", "5%-",NULL};
 static const char *medvolmute[]={"amixer", "-D", "pulse", "set", "Master", "1+", "toggle",NULL};
-
 static const char *brightnessup[]={"xbacklight", "-inc", "5",NULL};
 static const char *brightnessdown[]={"xbacklight", "-dec", "5",NULL};
-
-
 static const char *rofi[]={"rofi","-theme", ".config/rofi/nord.rasi","-font","Liga SFMono Nerd Font 9","-show","drun",NULL};
 static const char *flameshot[]={"flameshot", "gui",NULL};
 static const char *thunar[]={"thunar",NULL};
 static const char *firefox[]={"firefox",NULL};
-
-
-
-
-
-
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
