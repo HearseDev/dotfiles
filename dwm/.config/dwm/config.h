@@ -87,6 +87,8 @@ static const char *medvolmute[]={"amixer", "-D", "pulse", "set", "Master", "1+",
 static const char *brightnessup[]={"xbacklight", "-inc", "5",NULL};
 static const char *brightnessdown[]={"xbacklight", "-dec", "5",NULL};
 static const char *rofi[]={"rofi","-theme", ".config/rofi/nord.rasi","-font","Liga SFMono Nerd Font 9","-show","drun",NULL};
+// static const char *rofipower[]={"rofi","-theme", ".config/rofi/nord.rasi","-font","Liga SFMono Nerd Font 9","-show","power-menu","-modi","power-menu:.config/rofi/rofi-power-menu",NULL};
+static const char *rofipower[] = {".config/rofi/power", NULL};
 static const char *flameshot[]={"flameshot", "gui",NULL};
 static const char *thunar[]={"thunar",NULL};
 static const char *firefox[]={"firefox",NULL};
@@ -94,7 +96,8 @@ static const char *firefox[]={"firefox",NULL};
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_space,  spawn,          {.v = rofi} },
-	{ MODKEY,             XK_Return, spawn,          {.v = termcmd} },
+	{ MODKEY,                       XK_BackSpace,spawn,      {.v = rofipower} },
+	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd} },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },

@@ -1,0 +1,85 @@
+
+#!/usr/bin/env sh
+#
+# A rofi powered menu to execute power related action.
+# Uses: amixer mpc poweroff reboot rofi rofi-prompt
+
+power_off=' Poweroff'
+reboot=' Reboot'
+log_out=' Log Out'
+lock=' Lock'
+suspend='鈴 Sleep'
+function prompt() {
+
+yes='Confirm'
+no='Cancel'
+query='Are you sure?'
+while [ $# -ne 0 ]; do
+    case "$1" in
+        -y | --yes)
+            [ -n "$2" ] && yes="$2" || yes=''
+            shift
+            ;;
+
+        -n | --no)
+            [ -n "$2" ] && no="$2" || no=''
+            shift
+            ;;
+
+        -q | --query)
+            [ -n "$2" ] && query="$2"
+            shift
+            ;;
+    esac
+    shift
+done
+
+chosen=$(printf '%s;%s\n' "$yes" "$no" \
+    | rofi -theme '.config/rofi/nord.rasi' \
+           -font 'Liga SFMono Nerd Font 9'\
+           -p "$query" \
+           -dmenu \
+           -sep ';' \
+           -selected-row 0)
+
+case "$chosen" in
+    "$yes") return 0 ;;
+    *)      return 1 ;;
+esac
+}
+
+
+chosen=$(printf '%s;%s;%s;%s;%s\n' "$power_off" "$reboot" "$log_out" "$lock" \
+                                   "$suspend" \
+    | rofi -theme '.config/rofi/nord.rasi' \
+           -font 'Liga SFMono Nerd Font 9'\
+           -dmenu \
+           -sep ';' \
+           -selected-row 0)
+
+case "$chosen" in
+    "$power_off")
+        prompt --query 'Shutdown?' && systemctl poweroff
+        ;;
+
+    "$reboot")
+        prompt --query 'Reboot?' && systemctl reboot
+        ;;
+
+    "$log_out")
+        prompt --query 'Log Out?' && loginctl terminate-session ${XDG_SESSION_ID-}
+        ;;
+
+    "$lock")
+        slock
+        ;;
+
+    "$suspend")
+        # Pause music and mute volume before suspending.
+        playerctl pause
+        amixer set Master mute
+        systemctl suspend
+        ;;
+
+    *) exit 1 ;;
+esac

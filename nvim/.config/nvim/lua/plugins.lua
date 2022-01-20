@@ -343,7 +343,7 @@ return packer.startup {
         {
           'hrsh7th/vim-vsnip',
           config = function()
-            vim.cmd [[let g:vsnip_snippet_dir = expand('~/.config/vsnip')]]
+            vim.cmd [[let g:vsnip_snippet_dir = expand('~/.config/nvim/vsnip')]]
           end,
         },
         { 'hrsh7th/cmp-vsnip' },
