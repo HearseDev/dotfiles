@@ -75,6 +75,11 @@ lsp_installer.on_server_ready(function(server)
   server:setup(opts)
 end)
 
+
+  nvim_lsp.logos.setup {
+    on_attach = on_attach,
+    capabilities = capabilities
+  }
 --Basic Diagnostic settings
 vim.diagnostic.config {
   virtual_text = false,
