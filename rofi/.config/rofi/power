@@ -35,8 +35,7 @@ while [ $# -ne 0 ]; do
 done
 
 chosen=$(printf '%s;%s\n' "$yes" "$no" \
-    | rofi -theme '.config/rofi/nord.rasi' \
-           -font 'Liga SFMono Nerd Font 9'\
+          | rofi \
            -p "$query" \
            -dmenu \
            -sep ';' \
@@ -51,8 +50,7 @@ esac
 
 chosen=$(printf '%s;%s;%s;%s;%s\n' "$power_off" "$reboot" "$log_out" "$lock" \
                                    "$suspend" \
-    | rofi -theme '.config/rofi/nord.rasi' \
-           -font 'Liga SFMono Nerd Font 9'\
+          | rofi \
            -dmenu \
            -sep ';' \
            -selected-row 0)

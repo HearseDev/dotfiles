@@ -1,2 +1,5 @@
 nvim/.config/nvim/plugin/
 zsh/.zsh/*.zsh
+rofi/.config/rofi/*.rasi
+dwm/.config/dwm/*.o
+dwm/.config/dwm/*.rej

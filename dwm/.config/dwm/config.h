@@ -16,15 +16,17 @@ static const int focusonwheel       = 0;
 //static const int sidepad            = 10;       /* horizontal padding of bar */
 static const char *fonts[]          = { "Liga SFMono Nerd Font:size=10" };
 static const char dmenufont[]       = "Liga SFMono Nerd Font:size=10";
-static const char col_gray1[]       = "#2e3440"; //bg
-static const char col_gray2[]       = "#2e3440"; /* border color unfocused windows */
-static const char col_gray3[]       = "#00FFFF"; //text color
-static const char col_gray4[]       = "#00FFFF"; //focused text color
-static const char col_cyan[]        = "#3b4252"; //focused tags 
+
+//theme colors
+static const char black[]       = "#161320";
+static const char black2[]      = "#1E1E2E";
+static const char gray[]       = "#585767";
+static const char rosewater[]   = "#F5E0DC";
+
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	/*                    fg      bg      border   */
+  [SchemeNorm]       = { gray, black, black },
+  [SchemeSel]        = { rosewater, black2, black2},
 };
 
 static const char *const autostart[] = {
@@ -39,6 +41,11 @@ static const char *const autostart[] = {
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6"};
+
+static const unsigned int ulinepad	= 4;	/* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke	= 2;	/* thickness / height of the underline */
+static const unsigned int ulinevoffset	= 0;	/* how far above the bottom of the bar the line should appear */
+static const int ulineall 		= 0;	/* 1 to show underline on all tags, 0 for just the active ones */
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -76,7 +83,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = {NULL};
 static const char *termcmd[]  = { "kitty", NULL };
 static const char *medplaypausecmd[] = { "playerctl", "play-pause", NULL };
 static const char *mednextcmd[] = { "playerctl", "next", NULL };
@@ -86,15 +93,18 @@ static const char *medvoldown[]={"amixer", "-q", "-D", "pulse", "sset", "Master"
 static const char *medvolmute[]={"amixer", "-D", "pulse", "set", "Master", "1+", "toggle",NULL};
 static const char *brightnessup[]={"xbacklight", "-inc", "5",NULL};
 static const char *brightnessdown[]={"xbacklight", "-dec", "5",NULL};
-static const char *rofi[]={"rofi","-theme", ".config/rofi/nord.rasi","-font","Liga SFMono Nerd Font 9","-show","drun",NULL};
+static const char *rofi[]={"rofi","-show","drun",NULL};
 // static const char *rofipower[]={"rofi","-theme", ".config/rofi/nord.rasi","-font","Liga SFMono Nerd Font 9","-show","power-menu","-modi","power-menu:.config/rofi/rofi-power-menu",NULL};
 static const char *rofipower[] = {".config/rofi/power", NULL};
 static const char *flameshot[]={"flameshot", "gui",NULL};
 static const char *thunar[]={"thunar",NULL};
 static const char *firefox[]={"firefox",NULL};
 
+#include "movestack.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
+  { MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
+  { MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_space,  spawn,          {.v = rofi} },
 	{ MODKEY,                       XK_BackSpace,spawn,      {.v = rofipower} },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd} },

@@ -1,0 +1,35 @@
+--- evil_lualine.lua	2022-02-09 07:23:43.194459337 -0800
++++ evil.lua	2022-02-09 07:26:57.505461851 -0800
+@@ -39,13 +39,7 @@
+     -- Disable sections and component separators
+     component_separators = '',
+     section_separators = '',
+-    theme = {
+-      -- We are going to use lualine_c an lualine_x as left and
+-      -- right section. Both are highlighted by c theme .  So we
+-      -- are just setting default looks o statusline
+-      normal = { c = { fg = colors.fg, bg = colors.bg } },
+-      inactive = { c = { fg = colors.fg, bg = colors.bg } },
+-    },
++    theme = 'catppuccin',
+   },
+   sections = {
+     -- these are to remove the defaults
+@@ -112,7 +106,7 @@
+       ['!'] = colors.red,
+       t = colors.red,
+     }
+-    vim.api.nvim_command('hi! LualineMode guifg=' .. mode_color[vim.fn.mode()] .. ' guibg=' .. colors.bg)
++    vim.api.nvim_command('hi! LualineMode guifg=' .. mode_color[vim.fn.mode()] .. ' guibg=' .. '#1A1826')
+     return ''
+   end,
+   color = 'LualineMode',
+@@ -135,6 +129,8 @@
+ 
+ ins_left { 'progress', color = { fg = colors.fg, gui = 'bold' } }
+ 
++ins_left { 'filetype' }
++
+ ins_left {
+   'diagnostics',
+   sources = { 'nvim_diagnostic' },

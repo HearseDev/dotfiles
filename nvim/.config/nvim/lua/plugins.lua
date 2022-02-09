@@ -10,18 +10,10 @@ return packer.startup {
   ]]
     use 'wbthomason/packer.nvim'
     use 'lewis6991/impatient.nvim' --temp
-    use { 'marko-cerovac/material.nvim' }
-    use { 'folke/tokyonight.nvim' }
-    use {
-      'shaunsingh/nord.nvim',
-      config = function()
-        vim.cmd [[colorscheme nord]]
-      end,
-    }
     use {
       'catppuccin/nvim',
       config = function()
-        -- vim.cmd [[colorscheme catppuccin]]
+        vim.cmd [[colorscheme catppuccin]]
         local catppuccin = require 'catppuccin'
 
         -- configure it
@@ -366,7 +358,6 @@ return packer.startup {
     }
     use {
       'mhartington/formatter.nvim',
-      -- ft = { 'logos' },
     }
 
     use {
