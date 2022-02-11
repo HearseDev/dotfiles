@@ -39,12 +39,13 @@ function theosup(){
   printf "${BLUE}Updating Theos${NC}\n"
   $THEOS/bin/update-theos
 }
-function evillineup(){
-  #update evil_lualine
-  printf "${BLUE}Updating evil_lualine${NC}\n"
+function nvimup(){
+  #update nvim
+  printf "${BLUE}Updating nvim plugins${NC}\n"
   (cd $HOME/.config/nvim/lua; 
   curl -JLO https://raw.githubusercontent.com/nvim-lualine/lualine.nvim/master/examples/evil_lualine.lua;
-  patch evil_lualine.lua < evil.diff)
+  patch evil_lualine.lua < evil.diff;
+  nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync')
 }
 function paruup(){
   #update system
