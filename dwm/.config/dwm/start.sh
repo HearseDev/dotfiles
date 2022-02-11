@@ -1,6 +1,6 @@
 #!/bin/sh
 picom --experimental-backends &
-feh --bg-fill $HOME/Pictures/Wallpapers/peak.png &
+feh --bg-fill $HOME/Pictures/Wallpapers/moment.png &
 
 syndaemon -d -K -i 0.5
 

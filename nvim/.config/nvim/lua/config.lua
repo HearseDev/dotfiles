@@ -84,8 +84,8 @@ require('formatter').setup {
       -- clang-format
       function()
         return {
-          exe = 'python3',
-          args = { os.getenv 'HOME' .. '/projects/logos-format/logos-format.py', '--assume-filename', 'objc' },
+          exe = os.getenv 'HOME' .. '/projects/logos-format/logos-format.py',
+          args = {'--assume-filename', 'objc' },
           stdin = true,
           cwd = vim.fn.expand '%:p:h', -- Run clang-format in cwd of the file.
         }
