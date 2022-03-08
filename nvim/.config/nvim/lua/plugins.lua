@@ -38,7 +38,7 @@ return packer.startup {
             functions = 'italic',
             keywords = 'italic',
             strings = 'NONE',
-            variables = 'NONE',
+            variables = 'italic',
           },
           integrations = {
             treesitter = true,
@@ -58,13 +58,20 @@ return packer.startup {
               },
             },
             lsp_trouble = false,
+            cmp = true,
             lsp_saga = false,
             gitgutter = false,
             gitsigns = true,
             telescope = true,
             nvimtree = {
               enabled = true,
-              show_root = true,
+              show_root = false,
+              transparent_panel = false,
+            },
+            neotree = {
+              enabled = false,
+              show_root = false,
+              transparent_panel = false,
             },
             which_key = false,
             indent_blankline = {
@@ -81,6 +88,8 @@ return packer.startup {
             lightspeed = false,
             ts_rainbow = false,
             hop = false,
+            notify = false,
+            telekasten = false,
           },
         }
       end,

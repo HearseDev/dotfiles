@@ -14,10 +14,18 @@ function zshup(){
 
 function kittyup(){
   printf "${BLUE}Updating kitty theme${NC}\n"
-  (cd $HOME/.config/kitty;
-  curl -JLO https://raw.githubusercontent.com/catppuccin/kitty/main/catppuccin.conf;
-  sed -i'' -e '/macos_titlebar_color/d' catppuccin.conf)
-  #sed -i '/macos_titlebar_color/d' catppuccin.conf)
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # Linux
+    (cd $HOME/.config/kitty;
+    curl -JLO https://raw.githubusercontent.com/catppuccin/kitty/main/catppuccin.conf;
+    sed -i '/macos_titlebar_color/d' catppuccin.conf)
+
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # Mac OSX
+    (cd $HOME/.config/kitty;
+    curl -JLO https://raw.githubusercontent.com/catppuccin/kitty/main/catppuccin.conf;
+    sed -i'' -e '/macos_titlebar_color/d' catppuccin.conf)
+  fi
 }
 
 function rofiup(){
@@ -26,7 +34,8 @@ function rofiup(){
   (cd $HOME/.config/rofi; 
   curl -JLO https://raw.githubusercontent.com/catppuccin/rofi/main/.config/rofi/config.rasi;
   curl -JLO https://raw.githubusercontent.com/catppuccin/rofi/main/.local/share/rofi/themes/catppuccin.rasi
-  sed -i '/font: \"/c\    font: \"Liga SFMono Nerd Font 9\";' config.rasi)
+  sed -i '/font: \"/c\    font: \"Liga SFMono Nerd Font 9\";' config.rasi;
+  sed -i '/terminal: \"/c\    terminal: \"kitty\";' config.rasi;)
 }
 function discordup(){
   #update betterdiscord theme
@@ -44,7 +53,7 @@ function nvimup(){
   printf "${BLUE}Updating nvim plugins${NC}\n"
   (cd $HOME/.config/nvim/lua; 
   curl -JLO https://raw.githubusercontent.com/nvim-lualine/lualine.nvim/master/examples/evil_lualine.lua;
-  patch evil_lualine.lua < evil.diff;
+  patch evil_lualine.lua evil.diff;
   nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync')
 }
 function paruup(){

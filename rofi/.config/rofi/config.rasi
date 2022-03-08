@@ -4,7 +4,7 @@ configuration{
     font: "Liga SFMono Nerd Font 9";
     show-icons: true;
     icon-theme: "Oranchelo";
-    terminal: "st";
+    terminal: "kitty";
     drun-display-format: "{icon} {name}";
     location: 0;
     disable-history: false;
