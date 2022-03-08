@@ -24,7 +24,7 @@ function kittyup(){
     # Mac OSX
     (cd $HOME/.config/kitty;
     curl -JLO https://raw.githubusercontent.com/catppuccin/kitty/main/catppuccin.conf;
-    sed -i'' -e '/macos_titlebar_color/d' catppuccin.conf)
+    sed -i '' -e '/macos_titlebar_color/d' catppuccin.conf)
   fi
 }
 
@@ -40,8 +40,15 @@ function rofiup(){
 function discordup(){
   #update betterdiscord theme
   printf "${BLUE}Updating BetterDiscord theme${NC}\n"
-  (cd $HOME/.config/BetterDiscord/themes;
-  curl -JLO https://raw.githubusercontent.com/catppuccin/discord/main/Catppuccin.theme.css)
+
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # Linux
+    (cd $HOME/.config/BetterDiscord/themes;
+    curl -JLO https://raw.githubusercontent.com/catppuccin/discord/main/Catppuccin.theme.css)
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    (cd $HOME/Library/Application\ Support/BetterDiscord/themes;
+    curl -JLO https://raw.githubusercontent.com/catppuccin/discord/main/Catppuccin.theme.css)
+  fi
 }
 function theosup(){
   #update theos
