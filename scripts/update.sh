@@ -9,7 +9,8 @@ function zshup(){
   (cd $HOME/.zsh;
   curl -JLO https://github.com/ohmyzsh/ohmyzsh/raw/master/plugins/git/git.plugin.zsh;
   curl -JLO https://github.com/ohmyzsh/ohmyzsh/raw/master/plugins/sudo/sudo.plugin.zsh;
-  git submodule update --init --recursive --remote --merge)
+  #git submodule update --init --recursive --remote --merge)
+  git submodule update --init --recursive)
 }
 
 function kittyup(){
@@ -62,6 +63,7 @@ function nvimup(){
   curl -JLO https://raw.githubusercontent.com/nvim-lualine/lualine.nvim/master/examples/evil_lualine.lua;
   patch evil_lualine.lua evil.diff;
   nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync')
+  printf "\n"
 }
 function paruup(){
   #update system
@@ -72,6 +74,11 @@ function brewup(){
   #update system
   printf "${BLUE}Updating System${NC}\n"
   (brew upgrade;brew update;brew upgrade --cask)
+}
+function aptup(){
+  #update system
+  printf "${BLUE}Updating System${NC}\n"
+  (sudo apt-get update;sudo apt-get upgrade;)
 }
 
 #check if arguments are provided

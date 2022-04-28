@@ -4,9 +4,55 @@
     "body": ["@interface ${1:class}", "\t$0", "@end"],
     "description": "@interface"
   },
-  "method": {
-    "prefix": ["method"],
-    "body": ["-(${1:returnType})${0:methodName}"],
-    "description": "method"
+
+  "@implementation": {
+    "prefix": ["@implementation"],
+    "body": ["@implementation ${1:class}", "\t$0", "@end"],
+    "description": "@implementation"
+  },
+
+  "%hook": {
+    "prefix": ["%hook"],
+    "body": ["%hook ${1:class}", "\t$0 ", "%end"],
+    "description": "%hook"
+  },
+  "%subclass": {
+    "prefix": ["%subclass"],
+    "body": ["%subclass ${1:class}", "\t$0 ", "%end"],
+    "description": "%subclass"
+  },
+  "%ctor": {
+    "prefix": ["%ctor"],
+    "body": ["%ctor{", "\t$0", "}"],
+    "description": "%ctor"
+  },
+  "%c": {
+    "prefix": ["%c"],
+    "body": ["%c($0)"],
+    "description": "%c"
+  },
+  "%orig": {
+    "prefix": ["%orig"],
+    "body": ["%orig($0)"],
+    "description": "%orig"
+  },
+  "MSHookIvar": {
+    "prefix": ["MSHookIvar"],
+    "body": ["MSHookIvar<${1:type}>(${2:object},\"${3:name}\");"],
+    "description": "MSHookIvar"
+  },
+
+  "UIView": {
+    "prefix": ["UIView"],
+    "body": ["UIView *${1:name} = [[UIView alloc]initWithFrame:CGRectMake(${2:x},${3:y},${4:w},${5:h})];"],
+    "description": "UIView"
+  },
+
+  "NSLogify": {
+    "prefix": ["NSLogify"],
+    "body": ["NSLog(@\"NSLogify $0\");"],
+    "description": "NSLogify"
   }
+ 
+
 }

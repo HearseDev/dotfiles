@@ -305,6 +305,7 @@ return packer.startup {
       setup = function()
         vim.api.nvim_set_keymap('n', '<Leader>/', ':Telescope find_files<CR>', { noremap = true, silent = true })
         vim.api.nvim_set_keymap('n', '<Leader>f', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+
         vim.api.nvim_set_keymap(
           'n',
           '<C-f>',
@@ -335,12 +336,11 @@ return packer.startup {
         }
         -- To get fzf loaded and working with telescope, you need to call
         -- load_extension, somewhere after setup function:
-        require('telescope').load_extension 'fzf'
+        require('telescope').load_extension('fzf')
       end,
     }
     use {
       'lewis6991/gitsigns.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
       config = function()
         require('gitsigns').setup()
       end,
@@ -357,9 +357,10 @@ return packer.startup {
         {
           'hrsh7th/vim-vsnip',
           config = function()
-            vim.cmd [[let g:vsnip_snippet_dir = expand('~/.config/nvim/vsnip')]]
+            vim.cmd [[let g:vsnip_snippet_dir = expand('~/.config/vsnip')]]
           end,
         },
+        { 'hrsh7th/vim-vsnip-integ' },
         { 'hrsh7th/cmp-vsnip' },
         { 'hrsh7th/cmp-buffer' },
         { 'hrsh7th/cmp-nvim-lua' },
