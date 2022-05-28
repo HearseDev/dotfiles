@@ -97,7 +97,7 @@ static const char *rofi[]={"rofi","-show","drun",NULL};
 // static const char *rofipower[]={"rofi","-theme", ".config/rofi/nord.rasi","-font","Liga SFMono Nerd Font 9","-show","power-menu","-modi","power-menu:.config/rofi/rofi-power-menu",NULL};
 static const char *rofipower[] = {".config/rofi/power", NULL};
 static const char *flameshot[]={"flameshot", "gui",NULL};
-static const char *thunar[]={"thunar",NULL};
+static const char *fm[]={"nautilus",NULL};
 static const char *firefox[]={"firefox",NULL};
 
 #include "movestack.c"
@@ -138,7 +138,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,          quit,       {0} },
 	{ MODKEY,                       XK_w,          spawn,      SHCMD("feh --bg-fill $(find $HOME/Pictures/Wallpapers -type f | shuf -n 1)") },
 	{ MODKEY,                       XK_apostrophe, spawn,      {.v = firefox} },
-	{ MODKEY,                       XK_semicolon,  spawn,      {.v = thunar} },
+	{ MODKEY,                       XK_semicolon,  spawn,      {.v = fm} },
 	{ MODKEY,                       XK_Print,      spawn,      {.v = flameshot} },
 	{0,                             XF86XK_MonBrightnessUp,   spawn,     {.v = brightnessup} },
 	{0,                             XF86XK_MonBrightnessDown, spawn,      {.v = brightnessdown} },

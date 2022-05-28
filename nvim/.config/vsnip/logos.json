@@ -38,14 +38,26 @@
   },
   "MSHookIvar": {
     "prefix": ["MSHookIvar"],
-    "body": ["MSHookIvar<${1:type}>(${2:object},\"${3:name}\");"],
+    "body": ["MSHookIvar<${1:type}>(${2:object},\"${3:name}\")"],
     "description": "MSHookIvar"
+  },
+
+  "objc_getClass": {
+    "prefix": ["objc_getClass"],
+    "body": ["objc_getClass(\"${1:class}\")"],
+    "description": "objc_getClass"
   },
 
   "UIView": {
     "prefix": ["UIView"],
-    "body": ["UIView *${1:name} = [[UIView alloc]initWithFrame:CGRectMake(${2:x},${3:y},${4:w},${5:h})];"],
+    "body": ["UIView *${1:name} = [[UIView alloc]initWithFrame:CGRectMake(${2:x},${3:y},${4:w},${5:h})];", "$1.backgroundColor = [UIColor redColor];", "[${6:parent} addSubview:$1];"],
     "description": "UIView"
+  },
+
+  "CGRectMake": {
+    "prefix": ["CGRectMake"],
+    "body": ["CGRectMake(${1:x},${2:y},${3:w},${4:h})"],
+    "description": "CGRectMake"
   },
 
   "NSLogify": {
