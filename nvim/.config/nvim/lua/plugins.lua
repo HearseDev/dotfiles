@@ -339,12 +339,12 @@ return packer.startup {
         require('telescope').load_extension('fzf')
       end,
     }
-    --[[ use {
+    use {
       'lewis6991/gitsigns.nvim',
       config = function()
         require('gitsigns').setup()
       end,
-    } ]]
+    }
     --native lsp
     use {
       'hrsh7th/nvim-cmp',
